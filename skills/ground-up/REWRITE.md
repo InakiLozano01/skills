@@ -9,8 +9,6 @@ Before you write, count the words of the original. The rewrite has a **budget** 
 - Bring in a fact from elsewhere in the material only when the passage cannot be understood without it.
 - After the text, list what stayed Open, limited to what changes what the reader decides or does. The list counts against the budget.
 
-When the text is full of internal names, read [EXAMPLE.md](EXAMPLE.md) first. It shows one text before and after these rules, in an invented domain.
-
 ## Check
 
 - Count the words of the rewrite, including the Open list. The count is within the budget, or the user asked for more. Over budget, cut and count again.

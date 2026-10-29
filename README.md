@@ -4,7 +4,7 @@ Agent skills for Claude Code and Codex.
 
 | Skill | Invocation | What it does |
 |---|---|---|
-| [`ground-up`](skills/ground-up/SKILL.md) | `/ground-up` | Writes text an outsider can follow from the first line, in the reader's own language: explanations for you, decision requests, progress reports, and messages for a client, a superior, or someone with no background, or a rewrite of a text that assumes context. Output in Spanish or English. |
+| [`ground-up`](skills/ground-up/SKILL.md) | `/ground-up` | Writes text an outsider can follow, in the reader's own language: explanations for you, and decision requests, progress reports, and messages for a client, a superior, or someone with no background. It also rewrites a text that assumes context. Output in Spanish or English. |
 
 `GLOSSARY.md` holds the vocabulary the skills use, such as outsider, gloss, certainty, reader context, ask, and door.
 

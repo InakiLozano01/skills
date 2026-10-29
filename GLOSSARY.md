@@ -9,7 +9,7 @@ The default reader: a capable person who knows general technical vocabulary (PR,
 _Avoid_: Beginner, layperson, newcomer
 
 **Reader context**:
-The bounded context the reader works in, which sets the ubiquitous language the text is written in. One of four: **domain** (owns the business, such as a client or a product superior), **engineering** (owns technical decisions, such as a technical superior), **outside** (no background in the work), or **user** (the person in the chat).
+The bounded context the reader works in, which sets the ubiquitous language the text is written in. One of four: **domain** (owns the business, such as a client or a product superior), **engineering** (owns technical decisions, such as a technical superior), **no background** (knows nothing of the work), or **user** (the person in the chat).
 _Avoid_: Audience, persona, level
 
 **Ask**:
@@ -19,7 +19,7 @@ _Avoid_: Goal, purpose, intent
 ## Writing moves
 
 **Gloss**:
-A proper name kept as is, followed on first use by a short phrase that says what it is and what role it plays in this case.
+An internal name or domain term kept as is, followed on first use by a short phrase that says what it is and what role it plays in this case.
 _Avoid_: Definition, translation, alias
 
 **Ground up**:
@@ -31,7 +31,7 @@ A text that asks a specific person to decide: the basics ground up, what must be
 _Avoid_: Consultation, escalation
 
 **Door**:
-How reversible a decision is. A **one-way door** is hard to reverse and needs more evidence and a clear owner. A **two-way door** is cheap to reverse and can be decided fast.
+How reversible a decision is. A **one-way door** is hard to reverse and needs more evidence and a clear owner. A **two-way door** is cheap to reverse; the text says how to reverse it.
 _Avoid_: Impact, severity
 
 **Progress report**:

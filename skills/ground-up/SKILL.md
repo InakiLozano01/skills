@@ -1,6 +1,6 @@
 ---
 name: ground-up
-description: Write text an outsider can follow from the first line, in the reader's own language. Explains a project to the user, writes a decision request, progress report, or message for a client, a superior, or someone with no background, or rewrites an existing text that assumes context. Output in Spanish or English.
+description: Writes text an outsider can follow, in the reader's own language: explanations, decision requests, progress reports, messages, and rewrites, in Spanish or English.
 disable-model-invocation: true
 ---
 
@@ -16,12 +16,17 @@ Three moves carry the skill:
 
 ## Say only what the material supports
 
-Every sentence comes from the material or from something you checked. A **gap** is something the material does not answer. Investigate each gap, or name it as Open when the reader needs it. A plausible sentence written to fill a gap is a fabrication, and so is a known fact reshaped to cover it.
+Every sentence comes from the material or from something you checked. A **gap** is something the material does not answer. Investigate each gap, or name it as Open when the reader needs it. A plausible sentence written to fill a gap is a fabrication, and so is a known fact reshaped to cover it. When the material does not explain the basics, start ground up from what it does say.
 
-- When the material does not explain the basics, start ground up from what it does say.
-- Say where each claim about the current state was checked: a working branch, the main branch, or an environment. Before you write that something does not exist yet, check the main branch too (`main` or `origin/main`).
-- Copy domain terms and states exactly as the material writes them, and gloss them. A rule the material calls decided and not implemented stays decided and not implemented.
-- If the repository has a glossary (`GLOSSARY.md`, a `GLOSSARY-MAP.md` that points to one, or a glossary under `docs/`), take glosses from it first. After the text, addressed to the user, propose the terms you glossed that it lacks. Leave the file as it is.
+A claim has one of five states. Show the state where it changes what the reader believes or does, as plain words inside the sentence. A fact that comes straight from the material is stated plainly.
+
+- **Verified**: checked. When the reader might doubt it, say how: a real case, a test with synthetic data, or reading the code.
+- **Inferred**: deduced from a fact the text names, and unchecked. Include an inference only when the reader needs it to decide or act, and say what would confirm it.
+- **In progress**: started and partial. Say what exists and what is missing.
+- **Planned**: decided or proposed, and unstarted. Say who decided or who proposes, and whether it is approved. A rule the material calls decided and not implemented stays decided and not implemented.
+- **Open**: unknown so far, or waiting on a decision. Name an Open item only when it changes what the reader decides or does. Name it where it arises and, when known, say who can answer it.
+
+Say where each claim about the current state was checked: a working branch, the main branch, or an environment. Before you write that something does not exist yet, check the main branch too (`main` or `origin/main`).
 
 ## Size the text to the question
 
@@ -35,25 +40,25 @@ The **reader context** is the bounded context the reader works in. Write in its 
 
 - **Domain**: the reader owns the business, such as a client or a product superior. Their language is rules, cases, people, money, and dates. Treat the implementation like a deep module: show the reader a small interface (the rule, concrete examples, the consequences, and the cost) and keep the code, components, and PRs out of sight. Bring in a technical fact only when it changes what they decide or when they get it.
 - **Engineering**: the reader owns technical decisions, such as a technical superior. Their language is contracts, data, modules, risk, and cost. Tie every technical point to its product consequence: what changes for the users or the business.
-- **Outside**: the reader has no background in the work, such as someone from another team. Gloss everything and start from the most basic part.
+- **No background**: the reader knows nothing of the work, such as someone from another team. Gloss everything and start from the most basic part.
 - **User**: the person in the chat, who wants to understand something themselves. Write in their context, usually engineering. When the subject will reach another reader, add that reader's lens: what changes for them, in their language, and what they are likely to ask.
 
 The **ask** is what the text needs from the reader.
 
-- **Decide**: the reader must choose. Read [DECISION-REQUEST.md](DECISION-REQUEST.md).
+- **Decide**: the reader must choose. Read [DECISION-REQUEST.md](DECISION-REQUEST.md), then [EXAMPLE.md](EXAMPLE.md), which shows one decision request before and after these rules.
 - **Track**: the reader follows where the work stands. Read [PROGRESS.md](PROGRESS.md).
 - **Understand**: the reader needs to know how something works or why it is so.
 
 For a reader other than the user, write the shortest text that lets that person understand and act. A message opens with one line that names the topic and what you need from the reader, in their language. Everything after that line goes ground up.
 
-When the request points at an existing text, such as an earlier answer, a draft, or a report, read [REWRITE.md](REWRITE.md). When the user asks for a document, a report, an onboarding guide, or an explanation from zero, the text is long: read [LONG-TEXT.md](LONG-TEXT.md) too.
+When the request points at an existing text, such as an earlier answer, a draft, or a report, read [REWRITE.md](REWRITE.md), and [EXAMPLE.md](EXAMPLE.md) when the text is full of internal names. When the user asks for a document, a report, an onboarding guide, or an explanation from zero, the text is long: read [LONG-TEXT.md](LONG-TEXT.md) too.
 
 ## Steps
 
 1. **Gather.** Read the material behind the topic: the conversation, the code, docs, tickets, PRs, and any knowledge base the session can reach. List every internal name and term the text will need (components, task codes, domain words, people, acronyms) and every claim it will make. For each name, find what it is and what role it plays in this case. For each claim, find its certainty. Done when every name on the list has a gloss backed by a source, or is marked Open. An Open name appears in the text as an open question.
 2. **Order.** Decide what the outsider must know before each part makes sense. The usual order is: the basics of the domain, the subject or problem, what is known and how certain it is, the decision or proposal, and the consequence and next step. Use only the parts the question needs. Done when every concept appears after its explanation.
 3. **Write.** Apply the writing rules below.
-4. **Check.** Reread the draft as the outsider, top to bottom. The draft is done only when all of these hold, plus the checks of any branch file you read:
+4. **Check.** Reread the draft as the outsider, top to bottom. The draft is done only when all of these hold, plus the checks of each linked file you read:
    - The text answers the question asked, at the size the question calls for.
    - Every internal name has a gloss on its first use.
    - Every concept appears after its explanation.
@@ -71,21 +76,11 @@ When the request points at an existing text, such as an earlier answer, a draft,
 ### Gloss names and terms
 
 - Gloss every internal name: components, repositories, task codes, products, domain words, and people (with their role). Public names and general technical vocabulary go as they are.
-- A gloss is one phrase with what the thing is and why it matters here: "`<name>`, the <kind of thing> that <role in this case>, …".
-- Keep the proper name exactly as the source writes it, because the reader will meet it later in the code, the board, or a conversation.
+- A gloss is one phrase, inside the sentence where the term first appears, with what the thing is and why it matters here: "`<name>`, the <kind of thing> that <role in this case>, …".
+- Keep proper names, domain terms, and identifiers exactly as the source writes them, because the reader will meet them later in the code, the board, or a conversation.
 - Replace jargon with plain words. Keep a technical term only when the reader will meet it in the material, and gloss it.
-- Gloss each term inside the sentence where it first appears.
+- If the repository has a glossary (`GLOSSARY.md`, a `GLOSSARY-MAP.md` that points to one, or a glossary under `docs/`), take glosses from it first. After the text, addressed to the user, propose the terms you glossed that it lacks. Leave the file as it is.
 - An identifier is a task code, ticket, PR number, state, flag, field, or file name. Name the thing in plain words and make the thing the subject of the sentence. For the user, the identifier follows in parentheses, because the user will meet it in the code. For any other reader, add the identifier only when that person will look for it, and say where they will find it.
-
-### Show certainty where it matters
-
-A claim has one of five states. Show the state where it changes what the reader believes or does, as plain words inside the sentence. A fact that comes straight from the material is stated plainly.
-
-- **Verified**: checked. When the reader might doubt it, say how: a real case, a test with synthetic data, or reading the code.
-- **Inferred**: deduced from a fact the text names, and unchecked. Include an inference only when the reader needs it to decide or act, and say what would confirm it.
-- **In progress**: started and partial. Say what exists and what is missing.
-- **Planned**: decided or proposed, and unstarted. Say who decided or who proposes, and whether it is approved.
-- **Open**: unknown so far, or waiting on a decision. Name an Open item only when it changes what the reader decides or does. Name it where it arises and, when known, say who can answer it.
 
 ### Write in ASD-STE100
 
@@ -105,4 +100,3 @@ Write in ASD-STE100 Simplified Technical English, without its controlled diction
 
 - Write in the language of the request, unless the user names another one.
 - Use a neutral, professional register. In Spanish, use neutral Spanish and address the reader as "tú": no voseo, no "usted", and no regional slang.
-- Keep proper names, domain terms, and code identifiers exactly as written.

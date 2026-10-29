@@ -23,8 +23,6 @@ The reader context sets how the options read:
 
 End with the questions themselves: one numbered question per decision, so the person can answer by number. Each question asks one thing, is short, makes sense on its own, and can be answered in one word or by picking an option. A sentence that joins requests, such as "confirm X, or say who will, and tell us Y", holds three questions: split it.
 
-Before you write, read [EXAMPLE.md](EXAMPLE.md). It shows one decision request before and after these rules, in an invented domain.
-
 ## Check
 
 - Every pending decision on the gathered list is asked or left out on purpose.

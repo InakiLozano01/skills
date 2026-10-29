@@ -14,13 +14,15 @@ The outsider cannot tell what VetRed's import does, what a "ficha" or a "merge c
 
 ## After
 
+> Clara, necesitamos que decidas cuándo el importer puede unir por su cuenta dos historias clínicas que parecen de la misma mascota.
+>
 > VetRed es una red de cuatro clínicas veterinarias. Cada mascota tiene una historia clínica: el registro de sus consultas, vacunas y tratamientos. Cuando una clínica se suma a la red, sus historias clínicas se copian al sistema central con un proceso de importación, que el equipo llama "importer".
 >
 > Para no crear la misma mascota dos veces, el importer une dos historias clínicas cuando coinciden el nombre de la mascota y la especie. Ese criterio falla cuando dos dueños distintos tienen, por ejemplo, un perro llamado Luna. En ese caso, las vacunas de una Luna pueden aparecer en la historia clínica de la otra.
 >
 > Reproducimos el problema con datos inventados en un entorno de prueba. No comprobamos que haya ocurrido con datos reales. Todavía no sabemos cuántas mascotas de la red comparten nombre y especie; ese conteo está en curso.
 >
-> Clara, como responsable de la operación de las clínicas, tiene que decidir cuándo el importer puede unir dos historias clínicas por su cuenta. Hay dos opciones:
+> Como responsable de la operación de las clínicas, la decisión es tuya. Hay dos opciones:
 >
 > - **Unir solo si coincide el microchip**, el número de identificación que muchas mascotas llevan bajo la piel. No habría uniones equivocadas. Las mascotas sin microchip quedarían duplicadas, y el personal de recepción tendría que unirlas a mano.
 > - **Unir si coinciden el nombre, la especie y el teléfono del dueño**, y enviar a revisión los casos restantes. Habría menos duplicados, pero un dueño con dos mascotas del mismo nombre y especie seguiría expuesto a una unión equivocada.
@@ -29,16 +31,17 @@ The outsider cannot tell what VetRed's import does, what a "ficha" or a "merge c
 >
 > Recomendamos la primera opción. Una historia clínica mezclada puede llevar a un tratamiento equivocado, y un duplicado solo genera trabajo administrativo. La regla quedaría así: si dos historias clínicas tienen el mismo microchip, el importer las une; si no, quedan separadas.
 >
-> La respuesta hace falta antes del 10 de noviembre, cuando empieza la importación de la quinta clínica. La corrección está lista para revisión (PR #41) y espera esta decisión.
+> Necesitamos tu respuesta antes del 10 de noviembre, cuando empieza la importación de la quinta clínica. La corrección ya está hecha y solo espera tu decisión.
 >
-> **Pregunta para Clara:** ¿el importer debe unir historias clínicas solo cuando coincide el microchip, aunque eso deje mascotas duplicadas que recepción tendrá que unir a mano?
+> **Pregunta:** ¿el importer debe unir historias clínicas solo cuando coincide el microchip, aunque eso deje mascotas duplicadas que recepción tendrá que unir a mano?
 
 ## What changed
 
-- The domain comes first: what VetRed is, what a historia clínica is, and what the importer does. "importer" stays, with a gloss, because the team uses that name.
+- The message opens with one line that names the topic and what Clara must do, and it addresses her as "tú" throughout.
+- The domain comes next: what VetRed is, what a historia clínica is, and what the importer does. "importer" stays, with a gloss, because the team uses that name.
 - The problem is told as a concrete case, two dogs named Luna, in place of "merges cruzados".
 - Certainty is explicit: reproduced with invented data, not seen in a real case, and the count is in progress.
 - Each option says what changes and who carries the cost. The text says which mistake is hard to reverse (a one-way door) and which is cheap to fix (a two-way door). The recommendation gives its reason and states the rule as it would enter the spec.
 - Clara owns the clinics' operation, so the text speaks her language: pets, owners, vaccines, reception. The importer's code stays out of sight.
-- MATCH-12 and IMP03 are gone, because Clara does not need them to decide. PR #41 stays after a plain description, because someone will look for it.
+- MATCH-12, IMP03, and PR #41 are gone, because Clara does not need them to decide and will not look for them. The text keeps only the fact that matters to her: the fix is ready and waits on her answer.
 - The message is short, so it has no headings. It ends with one question Clara can answer with yes or no.
