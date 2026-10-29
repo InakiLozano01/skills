@@ -1,0 +1,5 @@
+interface:
+  display_name: "Ground Up"
+  short_description: "Write text an outsider can follow from the first line"
+policy:
+  allow_implicit_invocation: false
