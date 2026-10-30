@@ -35,7 +35,7 @@ How reversible a decision is. A **one-way door** is hard to reverse and needs mo
 _Avoid_: Impact, severity
 
 **Progress report**:
-A structured text for a reader whose ask is track. It opens with an executive summary in plain words, sets the global task and the slice this update covers, lists what advanced by capability (with a concrete case, certainty, and PR or ticket evidence for engineering readers), explains how the pieces converge and what comes next, and closes with asks, open doubts, or dependencies.
+A structured text for a reader whose ask is `track`. It comes in two sizes, both using bullets inside the copyable message: a **full progress report** (five sections: executive summary in plain words, context with global task and slice, what advanced by capability, how it converges and what comes next, and asks/doubts/dependencies, with a `:thread:` two-message variant for Slack) and a **compact status reply** for questions like "how much is left?" (a 1–2 line summary with item counts per state bucket, followed by bullets for what is in `main`, what is in progress or review, and what waits on implementation or an external decision). Code and branch topology stay behind a deep-module interface: evidence, not the subject.
 _Avoid_: Status update, changelog
 
 ## Certainty

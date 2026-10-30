@@ -4,6 +4,7 @@ The domains are invented. The examples are in Spanish; the same moves apply in E
 
 - [Example 1: a decision request (`decide`, domain reader)](#example-1-a-decision-request-decide-domain-reader)
 - [Example 2: a progress report in Slack thread format (`track`, engineering reader)](#example-2-a-progress-report-in-slack-thread-format-track-engineering-reader)
+- [Example 3: a compact status reply for "how much is left?" (`track`, domain/product reader)](#example-3-a-compact-status-reply-for-how-much-is-left-track-domainproduct-reader)
 
 ---
 
@@ -133,3 +134,84 @@ PEDIDOS, DUDAS Y DEPENDENCIAS
 - `QUÉ AVANZÓ` groups work by capability rather than listing loose PRs. Each bullet goes ground up inside: it shows the concrete problem solved (version 1 staying live while version 2 processes; long documents with conflicting sections requesting review), states where it was verified (local tests, simulated providers) and what is still disconnected, and gives Marco the PR URLs as evidence.
 - `CÓMO CONVERGE Y QUÉ SIGUE` shows how the local integration branch and the two repos come together, names the next step, and states plainly what `main` still returns today.
 - `PEDIDOS, DUDAS Y DEPENDENCIAS` surfaces the review ask for Marco and the unchecked Notion roadmap.
+
+---
+
+## Example 3: a compact status reply for "how much is left?" (`track`, domain/product reader)
+
+### Before
+
+A coworker asked on Slack: *"Necesitamos cerrar el documento de feedback de los operadores de CargoCheck hoy. ¿Cuánto falta?"*. An agent wrote operational notes to the user first, and then gave a 5-paragraph prose block full of unglossed shorthand and internal git mechanics:
+
+> Ya despaché cuatro subagentes para extraer commits de la PR #310 en worktrees separados.
+>
+> Puedes responder:
+>
+> ```
+> Ya fusionamos varias correcciones del feedback: el visor evita mezclar citas, se pueden reintentar páginas sin imagen y se vinculó la segunda firma con la corrida.
+>
+> Queda una parte importante. Ya hay trabajo implementado en una PR grande, pero esa PR mezcla muchos cambios y tiene conflictos con lo que ya fusionamos. La estamos dividiendo en entregas más pequeñas para revisarlas e integrarlas.
+>
+> Las primeras entregas cubren domicilio fiscal, balances ambiguos, páginas sin clasificar y revocaciones. En paralelo se trabajan los pendientes falsos, caras de DNI separadas y firmantes declarados.
+>
+> Después quedan la revisión de hallazgos, partes de la ficha y la medición sobre la muestra autorizada. Algunas reglas necesitan confirmación de Operaciones.
+>
+> Aún no tengo una estimación fiable de cierre: necesito los resultados de las primeras revisiones para separar lo que podemos integrar.
+> ```
+
+The reply is a wall of prose with no bullets, hides the proportion of the feedback document that is actually done vs. pending, exposes internal git merge-conflict details, drops unglossed shorthand ("segunda firma con la corrida", "pendientes falsos", "ficha", "muestra autorizada"), and ends with a defensive refusal to estimate without saying what can close today.
+
+### After
+
+**Mensaje listo para copiar a Slack (va primero):**
+
+```text
+De los 18 puntos del documento de feedback de los operadores, 8 ya están integrados en la rama principal (main), 7 ya tienen código escrito que estamos revisando por partes, y 3 esperan definición de Operaciones o pruebas finales. Todavía no están verificados en producción con casos reales.
+
+YA RESUELTO EN MAIN (8 PUNTOS, PENDIENTE DE VALIDAR EN PRODUCCIÓN)
+
+• Visor y citas: cada cita e imagen muestra únicamente páginas del archivo que se está revisando, sin mezclar páginas de otros documentos del mismo envío.
+
+• Reintento de páginas en blanco: cuando una página llega sin imagen legible, el operador puede volver a procesarla sin recargar todo el envío.
+
+• Trazabilidad de doble aprobación: cuando un envío exige dos aprobaciones ("segunda firma"), la segunda queda asociada a la misma ejecución de revisión ("corrida") que evaluó los documentos.
+
+EN REVISIÓN E INTEGRACIÓN (7 PUNTOS)
+
+• Cuatro correcciones ya están escritas y hoy las estamos separando en entregas chicas para revisar e integrar:
+  - mostrar el domicilio fiscal detectado como candidato a revisar junto con el documento de donde salió;
+  - marcar los balances contables donde el importe o la moneda se leen con duda;
+  - avisar qué páginas de un archivo largo quedaron sin clasificar, manteniendo su número de página original;
+  - enviar a revisión manual cualquier poder legal cuando no se pueda confirmar si sigue vigente o fue revocado.
+
+• Tres mejoras siguen en desarrollo en paralelo:
+  - reducir alertas falsas causadas por archivos mal clasificados;
+  - unir las dos caras de un documento de identidad cuando llegan en páginas sueltas;
+  - evitar que una lectura incompleta bloquee a un firmante que ya figura declarado en el formulario.
+
+QUÉ FALTA O REQUIERE DEFINICIÓN (3 PUNTOS)
+
+• Pantalla de resumen ("ficha") y edición de alertas: falta completar la vista con representantes y apoderados respaldados por sus documentos, y conservar las correcciones manuales del operador si se vuelve a correr el análisis.
+
+• Definiciones pendientes de Operaciones: falta que el equipo de Operaciones confirme cómo calcular el vencimiento de los poderes y qué combinación de firmas exigir en cada caso.
+
+• Evaluación final: una vez integrados los cambios, falta volver a correr la prueba sobre el conjunto de envíos reales autorizados para medir precisión y tiempos.
+
+CUÁNDO PODEMOS CERRARLO
+
+• Hoy sí podemos dejar cerrado el documento de seguimiento actualizando el estado de los 18 puntos y dejando marcadas las preguntas para Operaciones.
+
+• Para dar una fecha de cierre de todas las correcciones en el sistema, necesito que hoy terminen las revisiones de las primeras cuatro entregas y que Operaciones confirme las reglas pendientes.
+```
+
+---
+
+*Nota para ti: las cuatro extracciones de la PR #310 siguen corriendo en ramas separadas basadas en `main` (`a1b2c3d`). La comparación anterior mide contra `main`; desde el repositorio no se ve qué versión está desplegada hoy en producción.*
+
+### What changed
+
+- Update is delivered after comparing the feedback document against `main`, and the copy-ready Slack block comes **first**, before the internal note to the user.
+- The opening line partitions the feedback document with exact counts (8 in `main`, 7 in review/integration, 3 waiting on work or definitions from Operaciones) and states that production verification is still pending.
+- The 5-paragraph prose wall becomes scannable `•` bullets grouped by state (`YA RESUELTO EN MAIN`, `EN REVISIÓN E INTEGRACIÓN`, `QUÉ FALTA O REQUIERE DEFINICIÓN`, `CUÁNDO PODEMOS CERRARLO`).
+- Every shorthand label is unpacked into a concrete behaviour or glossed on first use ("segunda firma", "corrida", "ficha"), and internal git conflict mechanics are replaced by one deep-module phrase ("ya están escritas y hoy las estamos separando en entregas chicas para revisar e integrar").
+- The closing answers "cuánto falta / hoy" constructively: it separates what **can** close today (updating the 18 items in the document and surfacing the questions for Operaciones) from the concrete conditions that unlock the product ETA.

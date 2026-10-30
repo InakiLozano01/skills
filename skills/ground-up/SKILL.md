@@ -36,39 +36,40 @@ Two things about the reader shape the text. Read both from the request and the m
 
 The **reader context** is the bounded context the reader works in. Write in its ubiquitous language: the words that reader already uses for their own work.
 
-- **Domain**: the reader owns the business, such as a client or a product superior. Their language is rules, cases, people, money, and dates. Treat the implementation like a deep module: show the reader a small interface (the rule, concrete examples, the consequences, and the cost) and keep the code, components, and PRs out of sight. Bring in a technical fact only when it changes what they decide or when they get it.
-- **Engineering**: the reader owns technical decisions, such as a technical superior. Their language is contracts, data, modules, risk, and cost. Tie every technical point to its product consequence: what changes for the users or the business, and what failure or edge case each piece prevents.
+- **Domain**: the reader owns the business, such as a client or a product superior. Their language is rules, cases, people, money, and dates. Treat the implementation like a **deep module**: show the reader a small interface (the rule, concrete examples, the consequences, and the cost) and keep the code, components, branch topology, merge conflicts, and PRs out of sight. Bring in a technical fact only when it changes what they decide or when they get it.
+- **Engineering**: the reader owns technical decisions, such as a technical superior. Their language is contracts, data, modules, risk, and cost. Tie every technical point to its product consequence: what changes for the users or the business, and what failure or edge case each piece prevents. Keep git mechanics (worktrees, cherry-picks, rebases) behind a short phrase unless the reader must act on them.
 - **No background**: the reader knows nothing of the work, such as someone from another team. Gloss everything and start from the most basic part.
 - **User**: the person in the chat, who wants to understand something themselves. Write in their context, usually engineering. When the subject will reach another reader, add that reader's lens: what changes for them, in their language, and what they are likely to ask.
 
 The **ask** is what the text needs from the reader.
 
-- **Decide**: the reader must choose. Read [DECISION-REQUEST.md](DECISION-REQUEST.md), then [EXAMPLE.md](EXAMPLE.md), which shows a decision request and a progress report before and after these rules.
-- **Track**: the reader follows where the work stands. Read [PROGRESS.md](PROGRESS.md) and [EXAMPLE.md](EXAMPLE.md).
+- **Decide**: the reader must choose. Read [DECISION-REQUEST.md](DECISION-REQUEST.md), then [EXAMPLE.md](EXAMPLE.md), which shows a decision request and progress reports before and after these rules.
+- **Track**: the reader follows where the work stands, or asks how much is left (`¿cuánto falta?`, `¿qué ya está y qué falta?`). Read [PROGRESS.md](PROGRESS.md) and [EXAMPLE.md](EXAMPLE.md).
 - **Understand**: the reader needs to know how something works or why it is so.
 
-For a reader other than the user, write the shortest text that lets that person understand and act. A message opens with one line that names the topic and what you need from the reader, in their language.
+For a reader other than the user, write the shortest text that lets that person understand and act. Deliver the copy-ready message for that reader **first**, and put any operational notes for the user (such as subagent dispatches, branch state, or suggested glossary additions) in a brief note after the block.
 
 When the request points at an existing text, such as an earlier answer, a draft, or a report, read [REWRITE.md](REWRITE.md), and [EXAMPLE.md](EXAMPLE.md) when the text is full of internal names. When the user asks for a document, a report, an onboarding guide, or an explanation from zero, the text is long: read [LONG-TEXT.md](LONG-TEXT.md) too.
 
 ## Steps
 
-1. **Gather.** Read the material behind the topic: the conversation, the code, docs, tickets, PRs, and any knowledge base the session can reach. List every internal name and term the text will need (components, task codes, domain words, people, acronyms) and every claim it will make. For each name, find what it is and what role it plays in this case. For each claim, find its certainty. Done when every name on the list has a gloss backed by a source, or is marked Open. An Open name appears in the text as an open question.
+1. **Gather.** Read the material behind the topic: the conversation, the code, docs, tickets, PRs, and any knowledge base the session can reach. Wait for all running explorations and subagents to finish before writing; never emit a provisional "you can reply that I am checking" draft while reading is still in flight. When the request references a spec, feedback document, or checklist, map **every item** in that document to its current state in the repository (`main`, in an open PR or branch, unstarted, or waiting on a decision). List every internal name and term the text will need (components, task codes, domain words, people, acronyms) and every claim it will make. For each name, find what it is and what role it plays in this case. For each claim, find its certainty. Done when all explorations have returned, every document item is mapped to its state, and every name on the list has a gloss backed by a source or is marked Open.
 2. **Order.** Choose the shape that fits the ask:
    - **Narrative (`understand`)**: order the whole text from the basics of the domain, to the subject or problem, what is known and how certain it is, the decision or proposal, and the consequence and next step. Use only the parts the question needs.
    - **Structured (`track` or `decide`)**: follow [PROGRESS.md](PROGRESS.md) or [DECISION-REQUEST.md](DECISION-REQUEST.md). If the structure opens with an executive summary, keep internal names out of the summary so it needs no glosses; then order each section and each bullet ground up inside (the problem or behaviour first, then the mechanism with its glosses, its certainty, and its evidence).
    Done when every concept appears after its explanation.
 3. **Write.** Apply the writing rules below.
 4. **Check.** Reread the draft as the outsider, top to bottom. The draft is done only when all of these hold, plus the checks of each linked file you read:
-   - The text answers the question asked, at the size the question calls for.
+   - The text answers the question asked, at the size the question calls for, after all explorations completed.
    - Every internal name has a gloss on its first use. If there is an executive summary, it uses plain words without unglossed internal names.
+   - Multi-item bullets state each item as a concrete behaviour or problem in plain words, never as a telegraphic list of internal noun phrases.
    - Every concept appears after its explanation, either across the narrative or inside its section and bullet.
    - Every sentence traces to the material or to something you checked, or is marked as inferred or Open. Domain terms and states match the material word for word.
    - Every claim about the current state says where it was checked, and every "not yet" was checked against the main branch.
    - Every claim whose state changes what the reader believes or does shows that state. Every Open item changes what the reader decides or does, and is named where it arises.
    - The text speaks the language of the reader context. For a domain reader, every technical fact left in changes what they decide or when they get it. For an engineering reader, every technical point names its product consequence and the problem it solves.
    - Every identifier follows the identifier rule.
-   - Format matches the ask and channel: prose for explanations (`understand`), the structured sections and bullets of [PROGRESS.md](PROGRESS.md) for status updates (`track`), and copy-ready plain-text formatting when the output is a message to paste into Slack or chat.
+   - Format matches the ask and channel: prose for explanations (`understand`), the structured sections and bullets of [PROGRESS.md](PROGRESS.md) for status updates and "how much is left?" replies (`track`), and copy-ready plain-text formatting when the output is a message to paste into Slack or chat, with the recipient's message placed before any note to the user.
 
    Fix each failure and check again. Then deliver in the chat, unless the user asks for a file or a destination.
 
@@ -78,6 +79,7 @@ When the request points at an existing text, such as an earlier answer, a draft,
 
 - Gloss every internal name: components, repositories, task codes, products, domain words, and people (with their role). Public names and general technical vocabulary go as they are.
 - A gloss is one phrase, inside the sentence where the term first appears, with what the thing is and why it matters here: "`<name>`, the <kind of thing> that <role in this case>, …".
+- When summarizing several items from a document, spec, or backlog, state each item as a concrete behaviour or problem in plain words (for example, "calcular cuándo vence el poder de cada representante y qué combinación de firmas exige"), never as a compressed list of internal labels ("cálculo de mandatos y rúbricas, segunda firma con la corrida, pendientes falsos").
 - Keep proper names, domain terms, and identifiers exactly as the source writes them, because the reader will meet them later in the code, the board, or a conversation.
 - Replace jargon with plain words. Keep a technical term only when the reader will meet it in the material, and gloss it.
 - If the repository has a glossary (`GLOSSARY.md`, a `GLOSSARY-MAP.md` that points to one, or a glossary under `docs/`), take glosses from it first. After the text, addressed to the user, propose the terms you glossed that it lacks. Leave the file as it is.
@@ -92,12 +94,12 @@ Write in ASD-STE100 Simplified Technical English, without its controlled diction
 
 ### Match the format to the ask and channel
 
-- For **explanations (`understand`)** and short answers, write prose by default. Each paragraph picks up where the previous one ended, so the text reads as one account.
-- For **progress reports and status updates (`track`)**, use the sections and bullets in [PROGRESS.md](PROGRESS.md) so the reader can scan the summary, what advanced, what comes next, and the asks.
+- For **explanations (`understand`)** and short conceptual answers, write prose by default. Each paragraph picks up where the previous one ended, so the text reads as one account.
+- For **progress reports and status replies (`track`)**, always use the structured sections and bullets in [PROGRESS.md](PROGRESS.md) — including inside copyable reply blocks (`Puedes responder:`) when answering "where does X stand?" or "how much is left?". Never collapse a status reply into a multi-paragraph wall of prose.
 - For **decision requests (`decide`)**, write the basics in prose and use bullets for the options and a numbered list for the final questions, as in [DECISION-REQUEST.md](DECISION-REQUEST.md).
 - Use a numbered list for a real sequence, such as steps, stages, or numbered questions.
-- Use bullets for parallel, independent items the reader scans or acts on, such as capabilities in a progress report, options in a decision, tasks per person, or acceptance criteria.
-- When the user asks for a message to copy and paste into Slack or chat, deliver it inside a copyable code block using plain-text section headers and `•` bullets separated by blank lines so pasting never breaks the formatting. For documents or direct answers in the chat, use standard Markdown (`##`, `-`).
+- Use bullets for parallel, independent items the reader scans or acts on, such as capabilities in a progress report, state buckets in a status reply, options in a decision, tasks per person, or acceptance criteria.
+- When the user asks for a message to copy and paste into Slack or chat, deliver the recipient's message first inside a copyable code block using plain-text section headers and `•` bullets separated by blank lines so pasting never breaks the formatting. For documents or direct answers in the chat, use standard Markdown (`##`, `-`).
 
 ### Language and tone
 
