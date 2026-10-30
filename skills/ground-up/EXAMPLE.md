@@ -45,14 +45,14 @@ The outsider cannot tell what VetRed's import does, what a "ficha" or a "merge c
 
 ### What changed
 
-- The message opens with one line that names the topic and what Clara must do, and it addresses her as "tú" throughout.
-- The domain comes next: what VetRed is, what a historia clínica is, and what the importer does. "importer" stays, with a gloss, because the team uses that name.
-- The problem is told as a concrete case, two dogs named Luna, in place of "merges cruzados".
-- Certainty is explicit: reproduced with invented data, not seen in a real case, and the count is in progress.
-- Each option says what changes and who carries the cost. The text says which mistake is hard to reverse (a one-way door) and which is cheap to fix (a two-way door). The recommendation gives its reason and states the rule as it would enter the spec.
-- Clara owns the clinics' operation, so the text speaks her language: pets, owners, vaccines, reception. The importer's code stays out of sight.
-- MATCH-12, IMP03, and PR #41 are gone, because Clara does not need them to decide and will not look for them. The text keeps only the fact that matters to her: the fix is ready and waits on her answer.
-- The message is short, so it has no headings. It ends with one question Clara can answer with yes or no.
+- The message opens with a **BLUF (Bottom Line Up Front)** line that names the topic and what Clara must do, addressing her as "tú" throughout.
+- The domain basics are **grounded** next: what VetRed is, what a historia clínica is, and what the importer does. `"importer"` stays verbatim with an **appositive gloss** because the team uses that name.
+- The problem is shown through a **concrete mechanism** and scenario (**Specification by Example**: two dogs named Luna) in place of `"merges cruzados"`.
+- **Certainty** is explicit: reproduced with synthetic data, not verified in a real case, and the count is in progress.
+- Each option shows what changes and who carries the cost. The text states which mistake is a **one-way door** (hard to reverse) and which is a **two-way door** (cheap to fix). The recommendation gives its reason and states the rule as it would enter the spec.
+- Clara works in the **domain** bounded context, so the text speaks her **ubiquitous language** (pets, owners, vaccines, reception) and keeps the importer's code inside a **deep module**.
+- `MATCH-12`, `IMP03`, and `PR #41` are omitted because Clara does not use them to decide. The text keeps the one operational fact that changes her timing: the fix is ready and waits on her answer.
+- It ends with one short question Clara can answer with yes or no.
 
 ---
 
@@ -129,11 +129,11 @@ PEDIDOS, DUDAS Y DEPENDENCIAS
 
 ### What changed
 
-- The update splits into two copy-ready Slack blocks: a `:thread:` opener with an executive summary in plain words and a tag for Marco, and a thread reply with the structured detail using `•` bullets and blank lines that survive copy-paste.
-- `CONTEXTO` explains what DocVault does from zero, states the global task (service migration) and the slice this update covers (stage 2: the document processing path), and glosses both repositories (`docvault-engine` and `docvault-infra`).
-- `QUÉ AVANZÓ` groups work by capability rather than listing loose PRs. Each bullet goes ground up inside: it shows the concrete problem solved (version 1 staying live while version 2 processes; long documents with conflicting sections requesting review), states where it was verified (local tests, simulated providers) and what is still disconnected, and gives Marco the PR URLs as evidence.
+- The update splits into two copy-ready Slack blocks: a `:thread:` opener with a **BLUF** (`RESUMEN EJECUTIVO`) in plain words and a tag for Marco, and a thread reply with the structured detail using `•` bullets and blank lines that survive copy-paste.
+- `CONTEXTO` grounds what DocVault does from zero, states the **global task** (service migration) and the slice this update covers (stage 2: the document processing path), and attaches **appositive glosses** to both repositories (`docvault-engine` and `docvault-infra`).
+- `QUÉ AVANZÓ` groups work by capability rather than listing loose PRs. Each bullet builds **ground up** inside, passes the **portability test** by showing the **concrete mechanism** solved (version 1 staying live while version 2 processes; long documents with conflicting sections requesting review), states its **certainty** and where it was verified (local tests, simulated providers), and gives Marco the PR URLs as evidence.
 - `CÓMO CONVERGE Y QUÉ SIGUE` shows how the local integration branch and the two repos come together, names the next step, and states plainly what `main` still returns today.
-- `PEDIDOS, DUDAS Y DEPENDENCIAS` surfaces the review ask for Marco and the unchecked Notion roadmap.
+- `PEDIDOS, DUDAS Y DEPENDENCIAS` surfaces the review ask for Marco and **documents the null** on the Notion roadmap.
 
 ---
 
@@ -193,7 +193,7 @@ QUÉ FALTA O REQUIERE DEFINICIÓN (3 PUNTOS)
 
 • Pantalla de resumen ("ficha") y edición de alertas: falta completar la vista con representantes y apoderados respaldados por sus documentos, y conservar las correcciones manuales del operador si se vuelve a correr el análisis.
 
-• Definiciones pendientes de Operaciones: falta que el equipo de Operaciones confirme cómo calcular el vencimiento de los poderes y qué combinación de firmas exigir en cada caso.
+• Definiciones pendientes de Operaciones: falta que el equipo de Operaciones confirme cómo calcular el vencimiento de los poderes y qué combinación de firmas exigir en cada caso (revisado en main y PRs abiertos; sin regla cerrada aún en el documento de Operaciones).
 
 • Evaluación final: una vez integrados los cambios, falta volver a correr la prueba sobre el conjunto de envíos reales autorizados para medir precisión y tiempos.
 
@@ -210,8 +210,8 @@ CUÁNDO PODEMOS CERRARLO
 
 ### What changed
 
-- Update is delivered after comparing the feedback document against `main`, and the copy-ready Slack block comes **first**, before the internal note to the user.
-- The opening line partitions the feedback document with exact counts (8 in `main`, 7 in review/integration, 3 waiting on work or definitions from Operaciones) and states that production verification is still pending.
+- The update is delivered after building a complete **traceability matrix** of the feedback document against `main`, and the copy-ready Slack block comes **first**, before the internal note to the user.
+- The **BLUF** headline partitions all 18 items of the feedback document across state buckets (8 in `main`, 7 in review/integration, 3 waiting on work or definitions from Operaciones) and states that production verification is still pending.
 - The 5-paragraph prose wall becomes scannable `•` bullets grouped by state (`YA RESUELTO EN MAIN`, `EN REVISIÓN E INTEGRACIÓN`, `QUÉ FALTA O REQUIERE DEFINICIÓN`, `CUÁNDO PODEMOS CERRARLO`).
-- Every shorthand label is unpacked into a concrete behaviour or glossed on first use ("segunda firma", "corrida", "ficha"), and internal git conflict mechanics are replaced by one deep-module phrase ("ya están escritas y hoy las estamos separando en entregas chicas para revisar e integrar").
-- The closing answers "cuánto falta / hoy" constructively: it separates what **can** close today (updating the 18 items in the document and surfacing the questions for Operaciones) from the concrete conditions that unlock the product ETA.
+- Every shorthand label is unpacked into a complete clause with **concrete mechanism** and behaviour or given an **appositive gloss** on first use (`"segunda firma"`, `"corrida"`, `"ficha"`), internal git conflict mechanics stay inside a **deep-module** phrase (`"ya están escritas y hoy las estamos separando en entregas chicas para revisar e integrar"`), and the pending rule **documents the null** (`"revisado en main y PRs abiertos; sin regla cerrada aún en el documento de Operaciones"`).
+- The closing answers `"¿cuánto falta / hoy?"` constructively: it separates what **can** close today (updating the 18 items in the tracking document and surfacing the questions for Operaciones) from the concrete conditions that unlock the product ETA.
