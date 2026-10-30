@@ -1,21 +1,52 @@
 # Progress report
 
-A **progress report** tells a reader whose ask is track where the work stands. It keeps every rule in SKILL.md and adds these.
+A **progress report** tells a reader whose ask is `track` where the work stands. It keeps every rule in [SKILL.md](SKILL.md) and adds these.
 
-Anchor the report in the product. The spec and its acceptance criteria are the measure, and the code is evidence. When the material has no written acceptance criteria, measure against the behaviour the work was meant to deliver, and say that no criteria are written.
+Anchor the report in the product and the problem each piece solves. The spec and its acceptance criteria are the measure, and the code, PRs, and tests are evidence. When the material has no written acceptance criteria, measure against the behaviour the work was meant to deliver, and say that no criteria are written.
 
-Write the basics ground up, then:
+## Structure
 
-1. What the work is for: the behaviour the product or its users should get.
-2. What users or the business can do now that they could not before, measured against that behaviour. Each item states its certainty and where it was checked. Merged code, deployed code, and code verified in an environment are three different states.
-3. What remains, and what blocks it. Each blocker names who can unblock it.
-4. Risks that change the scope, the plan, or the date.
-5. What you need from the reader, if anything. A decision goes as in [DECISION-REQUEST.md](DECISION-REQUEST.md).
+Use these five sections, with bullets inside each one:
 
-For an engineering reader, technical facts back each item: the contract, the migration, the PR. For a domain reader, they stay out unless they change the scope, a risk, or a date.
+1. **Executive summary** (`Resumen ejecutivo`): 2–4 bullets in plain words, with no unglossed internal names. State what already works and where it was tested, how the parts connect today, and what remains before users or the business can use the result.
+2. **Context and scope** (`Contexto`):
+   - What the system or product does, in one sentence from zero.
+   - What the **global task** is, and which slice of that task this update addresses.
+   - The main repositories or components involved, with a gloss for each one's role.
+3. **What advanced** (`Qué avanzó`): one bullet per **capability or problem solved**, never a bare list of files or PRs. Build each bullet ground up inside:
+   - Open with a short capability label.
+   - Explain what problem or failure case it handles, using a concrete scenario (for example, what happens when version 2 of a document arrives while version 1 is active, or when a queue delivery fails and retries).
+   - Gloss any internal term on its first use.
+   - State the certainty and where it was verified (`main`, a PR branch, a local test with synthetic data, a simulated provider, or a deployed environment), and what still lacks connection.
+   - For an **engineering** or **user** reader, include the PR or ticket URL/number at the end of the bullet as evidence. For a **domain** or **no-background** reader, leave PR numbers and code details out unless they change the scope, a risk, or a date.
+4. **How it converges and what comes next** (`Cómo converge y qué sigue`):
+   - How the pieces in flight come together (such as an integration branch or a first end-to-end test between services).
+   - The next concrete steps in order.
+   - What users or the main branch still see today (for example, endpoints that still return unavailable until the full flow is verified).
+5. **Asks, doubts, and dependencies** (`Pedidos, dudas y dependencias`):
+   - Any decision, approval, or action needed from the reader or another person, naming who owns each one. If a decision needs options and trade-offs, shape it as in [DECISION-REQUEST.md](DECISION-REQUEST.md).
+   - Open doubts, unverified assumptions, or external sources (such as a plan or board) that could not be checked in the session.
+
+## Slack and thread format
+
+When the report is meant to be sent on Slack or chat, or when the user asks for a thread (`:thread:` / hilo):
+
+- Put the output inside copyable code blocks using plain-text headers and `•` bullets separated by blank lines, so pasting into Slack never breaks the formatting.
+- When a thread is requested or standard for the channel, split the output into two copyable blocks:
+  - **Message 1 (thread root)**:
+    `:thread: <GENERAL TOPIC> - <specific report>`
+    Followed by the Executive summary bullets (`•`) and the tags/mentions for the people who need to read or act on it.
+  - **Message 2 (thread reply)**:
+    `CONTEXTO`, `QUÉ AVANZÓ`, `CÓMO CONVERGE Y QUÉ SIGUE`, and `PEDIDOS, DUDAS Y DEPENDENCIAS`, with `•` bullets and PR/ticket URLs on their own lines under the relevant bullet.
+
+When the user asks for a long document or a table-based status report in the chat (not a message to paste into Slack), you may combine this structure with [LONG-TEXT.md](LONG-TEXT.md) using standard Markdown headings (`##`), bullets (`-`), and tables.
 
 ## Check
 
-- Every item is a behaviour of the product, in the reader's language, with its certainty.
-- Every item called done names the environment where it was verified, or says it is only merged or only deployed.
-- Every blocker names who can unblock it.
+- The report has all five parts: Executive summary, Context (global task + slice), What advanced, How it converges and what comes next, and Asks/doubts/dependencies.
+- The Executive summary contains no unglossed internal names and states whether the work is available to users yet.
+- Every bullet in What advanced describes a capability and the concrete problem or case it solves, with its certainty and where it was verified.
+- Merged code, deployed code, and code verified in an environment are distinguished explicitly.
+- For an engineering or user reader, PR or ticket links/numbers back the items that have them.
+- Every blocker, ask, or dependency names who can unblock or answer it.
+- If the output is for Slack or a copy-paste message, it uses plain-text headers and `•` bullets inside a copyable block (and is split into Message 1 `:thread:` + Message 2 detail when a thread is requested).

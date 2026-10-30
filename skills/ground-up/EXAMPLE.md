@@ -1,8 +1,15 @@
-# Example: a decision request, before and after
+# Examples: before and after
 
-The domain is invented. The example is in Spanish; the same moves apply in English.
+The domains are invented. The examples are in Spanish; the same moves apply in English.
 
-## Before
+- [Example 1: a decision request (`decide`, domain reader)](#example-1-a-decision-request-decide-domain-reader)
+- [Example 2: a progress report in Slack thread format (`track`, engineering reader)](#example-2-a-progress-report-in-slack-thread-format-track-engineering-reader)
+
+---
+
+## Example 1: a decision request (`decide`, domain reader)
+
+### Before
 
 An agent wrote this for the user to forward to Clara. It assumes the reader already knows the project.
 
@@ -12,7 +19,7 @@ An agent wrote this for the user to forward to Clara. It assumes the reader alre
 
 The outsider cannot tell what VetRed's import does, what a "ficha" or a "merge cruzado" is, whether the problem happened to real customers, or what each option costs. The task codes act as subjects of sentences, and the question to Clara is never asked.
 
-## After
+### After
 
 > Clara, necesitamos que decidas cuándo el importer puede unir por su cuenta dos historias clínicas que parecen de la misma mascota.
 >
@@ -35,7 +42,7 @@ The outsider cannot tell what VetRed's import does, what a "ficha" or a "merge c
 >
 > **Pregunta:** ¿el importer debe unir historias clínicas solo cuando coincide el microchip, aunque eso deje mascotas duplicadas que recepción tendrá que unir a mano?
 
-## What changed
+### What changed
 
 - The message opens with one line that names the topic and what Clara must do, and it addresses her as "tú" throughout.
 - The domain comes next: what VetRed is, what a historia clínica is, and what the importer does. "importer" stays, with a gloss, because the team uses that name.
@@ -45,3 +52,84 @@ The outsider cannot tell what VetRed's import does, what a "ficha" or a "merge c
 - Clara owns the clinics' operation, so the text speaks her language: pets, owners, vaccines, reception. The importer's code stays out of sight.
 - MATCH-12, IMP03, and PR #41 are gone, because Clara does not need them to decide and will not look for them. The text keeps only the fact that matters to her: the fix is ready and waits on her answer.
 - The message is short, so it has no headings. It ends with one question Clara can answer with yes or no.
+
+---
+
+## Example 2: a progress report in Slack thread format (`track`, engineering reader)
+
+### Before
+
+An agent wrote this status update for Marco, a technical lead, as a wall of abstract prose.
+
+> Marco, te paso el avance de la etapa 2 de DocVault. En docvault-engine ya abrimos PRs para versionado, idempotencia de jobs y el clasificador inicial con extracción. También hay un adaptador de grafo probado con mocks. En docvault-infra abrimos un PR con almacenamiento versionado, cola y entorno local. Además tenemos una rama local con cambios de recuperación y retiro de fuentes. Falta integrar las partes y probar todo junto; en main los endpoints siguen deshabilitados.
+
+The reader cannot scan it on Slack, cannot see the global task vs. what stage 2 tackles, does not know what failure each piece prevents, has no PR links to inspect, and has to paste paragraphs that lose their structure.
+
+### After
+
+**Mensaje 1 (apertura del hilo en Slack):**
+
+```text
+:thread: Migración de DocVault - Avance de la etapa 2 (procesamiento de documentos)
+
+RESUMEN EJECUTIVO
+
+• Ya hay piezas implementadas y probadas localmente para registrar, procesar y conservar evidencia de los documentos sin duplicar trabajo ante reintentos.
+
+• Los dos repositorios nuevos ya se conectaron en una primera prueba local a través de una cola de mensajes. La integración completa sigue en curso.
+
+• Las funciones nuevas todavía no están disponibles para usuarios: falta integrar las ramas, probar el recorrido completo de un documento y activarlo en el entorno de destino.
+
+cc @Marco (revisión de la cadena de PRs y validación contra la hoja de ruta)
+```
+
+**Mensaje 2 (respuesta dentro del hilo):**
+
+```text
+CONTEXTO
+
+• DocVault guarda documentos legales para que los equipos puedan consultar qué cláusulas y vencimientos contienen.
+
+• La tarea global es migrar esa capacidad a servicios separados. La etapa 2 aborda el recorrido intermedio: recibir un documento, procesarlo, vincular cada dato extraído con el archivo del que salió y dejarlo listo para búsquedas.
+
+• docvault-engine contiene la lógica de documentos, versiones y extracción. docvault-infra prepara el almacenamiento, las colas de trabajo y el entorno para ejecutar ambos servicios juntos.
+
+QUÉ AVANZÓ
+
+• Procesamiento recuperable: docvault-engine registra un trabajo por cada documento y versión. Las pruebas locales comprueban que una entrega repetida reutiliza el mismo trabajo y no puede asignarse a otro cliente, es decir, a otro espacio aislado de documentos.
+https://github.com/example-org/docvault-engine/pull/18
+
+• Versiones y evidencia: si la versión 1 de un contrato está activa y llega una versión 2, la versión 1 sigue disponible para consultas mientras se procesa la nueva. La versión 2 solo la reemplaza cuando termina de verificarse. Ese comportamiento pasó pruebas locales; falta conectarlo al procesador completo.
+https://github.com/example-org/docvault-engine/pull/22
+
+• Entrega de trabajos por cola: docvault-engine guarda primero el evento en su base de datos y luego un proceso lo envía a la cola que organiza los trabajos pendientes, con pruebas de fallos y reintentos. Otro cambio comprueba que el mensaje recibido corresponda al documento y cliente correctos. Ambas piezas siguen inactivas hasta cerrar la recuperación.
+https://github.com/example-org/docvault-engine/pull/25
+https://github.com/example-org/docvault-engine/pull/29
+
+• Clasificación y extracción: hay una implementación inicial que vincula cada cláusula extraída con la versión del archivo que la produjo. Para documentos largos, si las partes del documento discrepan sobre su tipo, el clasificador pide revisión en lugar de elegir uno. Probado con proveedores simulados; aún no conectado al procesamiento real.
+
+• Infraestructura y primera conexión: el PR de integración de docvault-infra prepara el almacenamiento con historial de versiones, la cola y un entorno local. En ese entorno ya se comprobó la comunicación entre la cola y una copia local de docvault-engine.
+https://github.com/example-org/docvault-infra/pull/14
+
+CÓMO CONVERGE Y QUÉ SIGUE
+
+• Una rama local de docvault-engine reúne los cambios de recuperación, retiro de fuentes dadas de baja y verificación de citas. Su integración y sus pruebas siguen en curso.
+
+• El siguiente paso es encadenar y revisar los PRs abiertos, integrar las versiones de docvault-engine y docvault-infra, y demostrar en local que un documento recorre todo el flujo de punta a punta.
+
+• En la rama principal (main) de docvault-engine, las consultas de búsqueda y cláusulas todavía responden como no disponibles.
+
+PEDIDOS, DUDAS Y DEPENDENCIAS
+
+• Revisión de PRs (@Marco): confirmar el orden de revisión de la cadena de versiones y cola (#18, #22, #25 y #29) antes de unir la rama de integración.
+
+• Dependencia abierta: queda pendiente contrastar este estado con la hoja de ruta en Notion, a la que no hubo acceso en esta sesión.
+```
+
+### What changed
+
+- The update splits into two copy-ready Slack blocks: a `:thread:` opener with an executive summary in plain words and a tag for Marco, and a thread reply with the structured detail using `•` bullets and blank lines that survive copy-paste.
+- `CONTEXTO` explains what DocVault does from zero, states the global task (service migration) and the slice this update covers (stage 2: the document processing path), and glosses both repositories (`docvault-engine` and `docvault-infra`).
+- `QUÉ AVANZÓ` groups work by capability rather than listing loose PRs. Each bullet goes ground up inside: it shows the concrete problem solved (version 1 staying live while version 2 processes; long documents with conflicting sections requesting review), states where it was verified (local tests, simulated providers) and what is still disconnected, and gives Marco the PR URLs as evidence.
+- `CÓMO CONVERGE Y QUÉ SIGUE` shows how the local integration branch and the two repos come together, names the next step, and states plainly what `main` still returns today.
+- `PEDIDOS, DUDAS Y DEPENDENCIAS` surfaces the review ask for Marco and the unchecked Notion roadmap.

@@ -23,11 +23,11 @@ An internal name or domain term kept as is, followed on first use by a short phr
 _Avoid_: Definition, translation, alias
 
 **Ground up**:
-The order of a text in which no concept appears before it is explained: basics first, then the problem, its certainty, the decision, and the consequence.
+The rule that no concept appears before its explanation. In a narrative text (`understand`), the whole piece runs from the basics to the problem, its certainty, the decision, and the consequence. In a structured text (`track` or `decide`), an executive summary or opening line can come first in plain words, and each section or bullet builds ground up inside: the problem or behaviour first, then the mechanism with its glosses, its certainty, and its evidence.
 _Avoid_: Bottom-up, from scratch, 0 to 100
 
 **Decision request**:
-A text that asks a specific person to decide: the basics ground up, what must be decided, the options and what each one changes, a recommendation with its reason, and what is needed from that person and by when. Each question is short and can be answered on its own.
+A text that asks a specific person to decide: one opening line, the basics ground up, what must be decided, the options and what each one changes, a recommendation with its reason, and what is needed from that person and by when. Each question is short and can be answered on its own.
 _Avoid_: Consultation, escalation
 
 **Door**:
@@ -35,7 +35,7 @@ How reversible a decision is. A **one-way door** is hard to reverse and needs mo
 _Avoid_: Impact, severity
 
 **Progress report**:
-A text for a reader whose ask is track. It measures the work against the product's acceptance criteria, says what users can do now and how certain that is, and names what remains and who can unblock it. Code is evidence, not the subject.
+A structured text for a reader whose ask is track. It opens with an executive summary in plain words, sets the global task and the slice this update covers, lists what advanced by capability (with a concrete case, certainty, and PR or ticket evidence for engineering readers), explains how the pieces converge and what comes next, and closes with asks, open doubts, or dependencies.
 _Avoid_: Status update, changelog
 
 ## Certainty
