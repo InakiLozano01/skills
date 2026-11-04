@@ -3,9 +3,11 @@
 
 Usage: python3 check_draft.py [--decide] [--original ORIGINAL [--owner]] [--allow RULE,...] [FILE]
 
---owner: the reader owns the system, so the rewrite budget is 1.2x instead of 1.5x.
-
---allow demotes the named rules to warnings; use it only when the user asked for that wording.   (reads stdin when FILE is omitted)
+Reads stdin when FILE is omitted.
+--decide: one question per numbered block is an error, not a warning.
+--original: measure the rewrite's word budget against ORIGINAL (1.5x ceiling).
+--owner: the reader owns the system, so the budget ceiling is 1.2x.
+--allow: demote the named rules to warnings; use it only when the user asked for that wording.
 
 Errors (exit 1) are mechanical and always wrong in a ground-up text.
 Warnings (exit 0) list spots to reread against the reader's common ground.
