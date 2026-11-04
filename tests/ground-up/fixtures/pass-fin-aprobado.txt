@@ -1,0 +1,5 @@
+Un legajo es el conjunto de documentos que la financiera reúne para revisar a un cliente. En una apertura de una sociedad, esos documentos pueden incluir actas, declaraciones de accionistas y poderes. Entre otras cosas, el analista necesita saber quiénes son las personas que poseen o controlan la sociedad: sus beneficiarios finales.
+
+El problema es que un legajo puede contener documentos que mencionan a más de una sociedad. Al probar con datos inventados, vimos que el sistema podía tomar una declaración de otra sociedad y atribuir sus personas al cliente que estaba revisando. Es un problema reproducido en pruebas sintéticas; no comprobamos que haya ocurrido en un caso real.
+
+Tu decisión fue que, si solo coincide el nombre de la sociedad y no hay otro dato que permita confirmarla, el sistema pida revisión y muestre las fuentes. Como algunas declaraciones todavía no aportan un identificador societario al lector, esto puede aumentar la cantidad de casos que un analista debe revisar. La información se conserva como posible, junto con sus documentos, sin presentarla como confirmada.

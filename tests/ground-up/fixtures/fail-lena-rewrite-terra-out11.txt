@@ -1,0 +1,72 @@
+```text
+Lena, necesito tus decisiones sobre permisos, publicación e infraestructura para avanzar con la edición de archivos y el auditor. La fecha a decidir para el auditor es el 13 de noviembre; no tengo una fecha límite confirmada para las demás respuestas.
+
+Cada acción tiene un id y una clase de permiso. En el perfil Atlas decide Access; en NORTE deciden Core o la API en proceso con el motor de common. Ambos lugares deben conocer cada acción nueva.
+
+Al leer lo que fusionaste hoy (Core #159, API #35, Access #41, BFF #58 y #60, common 0.4.0), entendí que NORTE inicia sesión con Auth0, que org:member se lee como org:<id>:user y que el Registry decide en proceso con el motor de common. No repito esas preguntas.
+
+1) LIVE_ACTIONS (solo perfil Atlas)
+
+• Al leer main de Access (b2a697e), encontré 13 acciones en LIVE_ACTIONS, sin resource.edit_file ni resource.dependency.set. Ambos ids están en el modelo de roles con nivel contributor y no se deniegan a agentes.
+
+• Mis API #33 y #34, para pins de dependencias y edición de archivos de draft, están en main con la flag apagada. Con Access, la API recibiría "bounded" y respondería 503, como ocurrió en tu #40. En NORTE no aplica: mi búsqueda no encontró LIVE_ACTIONS en common y API #35 decide en proceso.
+
+• Propongo añadir las dos acciones a Access. Puedes hacerlo tú o puedo abrir un PR de dos líneas y un test, con el patrón de tu #40; cualquiera de las dos opciones permite avanzar con esas acciones en Atlas.
+
+2) Las seis acciones del auditor
+
+• Mi búsqueda no encontró kb.finding.list, kb.finding.resolve, kb.finding.correct, kb.audit.get, kb.audit.set ni kb.audit.run en Access o common. Core #159 responde 503 authorization_contract_error para esa familia en NORTE; Core responde lo mismo en Atlas.
+
+• Propongo publicar las seis en ambos lugares: kb.finding.list y kb.audit.get con nivel user y permitidas a agentes; kb.finding.resolve con nivel contributor y denegada a agentes; kb.finding.correct, kb.audit.set y kb.audit.run con nivel maintainer y denegadas a agentes. Así los agentes podrían leer hallazgos y auditorías, pero no resolver, corregir, configurar ni ejecutar auditorías.
+
+• Construí las dos lecturas, pero no tools para resolver ni ejecutar: con la política propuesta, un agente recibiría insufficient_scope; en NORTE su token también lleva via = mcp. Propongo diferir el auditor del 13 de noviembre salvo que NORTE lo pida.
+
+3) kb.entity.merge
+
+• kb.entity.merge tiene nivel maintainer en Access y common. Verifiqué que no está en la lista de denegación de agentes de Access; en common vi que es la misma tabla, pero no la revisé línea por línea.
+
+• Fusionar entidades no se deshace: permitirlo a agentes abre una puerta irreversible. Recomiendo añadir la acción a agent_deny_list en ambos lugares. Si se permite, necesitamos evidencia que sustente esa decisión y una persona responsable de revisarla.
+
+4) Publicación directa
+
+• version.publish está en el techo registry:write del BFF y permitida a agentes. API #35 también decide la publicación directa en proceso. El ADR 0027 del BFF dice que la política no exige por sí sola un actor humano (via = web).
+
+• Si una organización no exige aprobación, permitir la publicación directa dejaría publicar a un agente; prohibirla reservaría esa acción fuera del alcance del agente. Hasta definir la regla no construiré una tool de publicación.
+
+5) create_draft y allowlist
+
+• resource.allowlist.update está "reserved" en Access y resource.create_draft figura en contributor. Un relevamiento mío, que no volví a verificar, indica que create_draft no se evalúa porque crear un recurso no tiene descriptor previo.
+
+• Si un agente necesita crear drafts o editar la allowlist en NORTE, habrá que definir cómo se decide cada acción. Si no las necesita, esa definición no bloquea sus tools.
+
+6) Infra, para encender la edición de archivos
+
+• El rol del API sobre el bucket del Registry es de solo lectura. Para REGISTRY_DRAFT_FILE_WRITE_ENABLED hacen falta s3:PutObject sobre drafts/*, una barrida de huérfanos o un ciclo de vida del bucket, e If-None-Match en la librería de clientes de Python.
+
+• Mi Infra #140, para endurecer el bucket, está en pausa porque toca stack-ecs, tu stack de prueba. Fusionarlo mantendría el cambio junto; partirlo separaría módulo y cableado; cerrarlo dejaría ese PR sin integrar. No tengo recomendación para esta elección ni para la publicación directa, la creación de drafts o la allowlist.
+
+Y dos cosas de Notion, sin urgencia
+
+• Las 15 sub-tareas del hito con PR fusionado siguen en "In review/test"; los ítems 16 a 19 y 21 siguen en "Planned" aunque están hechos. Puedes moverlos tú o puedo moverlos yo con tu OK.
+
+• mcp #44 y #46 entraron con un job en FAILURE y dos CANCELLED. No sé si era esperado.
+
+PREGUNTAS
+
+1. ¿Añades tú las dos acciones a LIVE_ACTIONS o abro yo el PR?
+2. ¿Publicas las seis acciones del auditor en Access y common con los niveles propuestos?
+3. ¿Entra el auditor el 13 de noviembre o lo diferimos?
+4. ¿Añades kb.entity.merge a agent_deny_list en Access y common?
+5. Si permitimos la fusión a agentes, ¿qué evidencia sustenta esa decisión irreversible?
+6. Si permitimos la fusión a agentes, ¿quién revisará esa decisión?
+7. Sin aprobación exigida por la organización, ¿puede un agente publicar directamente?
+8. ¿Necesita un agente crear drafts en NORTE?
+9. ¿Necesita un agente editar la allowlist en NORTE?
+10. ¿Fusiono Infra #140, lo separo en módulo y cableado, o lo cierro?
+11. ¿Mueves tú los estados de Notion o los muevo yo con tu OK?
+12. ¿Eran esperados el FAILURE y los dos CANCELLED en mcp #44 y #46?
+
+Lo que ya decidimos y no necesita respuesta: no toco nada que tú tomaste del hito. Cerré mis duplicados (Portal #61 y #62, MCP #47 y #48). No hay tools para lo que Access veta a agentes. Todo va detrás de flags apagadas, con el MCP desplegado antes que el BFF.
+```
+
+Abierto para ti: solo disponemos del mensaje, sin acceso a los repositorios ni a Slack. El material no confirma la lista de denegación de common línea por línea ni la evaluación actual de `resource.create_draft`; Lena puede confirmar ambos puntos. Tampoco indica una fecha límite para las demás decisiones; el responsable de fijarla está por definir. El material no aporta evidencia ni responsable para revisar una posible fusión de entidades por agentes; se le pide a Lena que los proponga.

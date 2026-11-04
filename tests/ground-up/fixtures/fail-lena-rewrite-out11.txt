@@ -1,0 +1,95 @@
+```text
+Lena, necesito que decidas seis temas de permisos (8 preguntas), más 2 consultas sin urgencia. A y B bloquean encender la edición de archivos de draft; los otros cuatro deciden qué tools para agentes construyo.
+
+Ya descarté tres preguntas leyendo lo que integraste hoy (Core #159, API #35, Access #41, BFF #58 y #60, common 0.4.0): el login de NORTE con Auth0, cómo se lee org:member (como org:<id>:user) y cómo decide el Registry en NORTE (en proceso, con el motor de common).
+
+Contexto en dos líneas. Cada acción (por ejemplo resource.edit_file) tiene un id y una clase de permiso. En el perfil Atlas las decide el servicio Access, y en NORTE las decide Core o la API en proceso con el motor de common, así que las dos tablas tienen que conocer cada acción nueva.
+
+A) LIVE_ACTIONS (sólo perfil Atlas; bloquea)
+
+• resource.edit_file y resource.dependency.set no están en LIVE_ACTIONS de Access. Lo verifiqué leyendo main (b2a697e): la lista tiene 13 acciones y esas dos no. Los ids sí existen en el modelo de roles, nivel contributor, y no se les niegan a agentes.
+
+• Mis API #33 (pins de dependencias) y #34 (edición de archivos de draft) ya están en main con la flag apagada. Si la encendemos en Atlas, deduzco por tu #40 que la API recibiría "bounded" de Access y respondería 503, así que nadie podría editar archivos ni fijar dependencias. Lo confirmaría encender la flag en Atlas.
+
+• En NORTE no aplica: busqué LIVE_ACTIONS en common y no existe, y tu API #35 decide en proceso.
+
+• Puerta de dos sentidos: se revierte quitando los dos ids. Me ofrezco a hacerlo en un PR de dos líneas y un test, mismo patrón que tu #40.
+
+B) Infra para encender la edición de archivos (bloquea)
+
+• El rol de la API sobre el bucket del Registry es de sólo lectura. Para encender REGISTRY_DRAFT_FILE_WRITE_ENABLED faltan tres cosas: s3:PutObject sobre drafts/*, una barrida de huérfanos (o ciclo de vida del bucket) e If-None-Match en la librería de clientes de Python.
+
+• Mi Infra #140, que endurece el bucket, está en pausa porque toca stack-ecs, tu stack de prueba. Opciones: integrarlo como está (cambia tu stack de prueba), partirlo en módulo y cableado, o cerrarlo.
+
+• Puerta de dos sentidos: una integración se revierte y un PR cerrado se reabre. No tengo recomendación: depende de cómo usas stack-ecs hoy.
+
+C) Las seis acciones del auditor
+
+• kb.finding.list, kb.finding.resolve, kb.finding.correct, kb.audit.get, kb.audit.set y kb.audit.run no existen ni en Access ni en common (búsqueda de código en los dos, cero resultados). En los dos perfiles, Core responde 503 authorization_contract_error para esa familia (en NORTE, con tu #159). Deduzco que las dos tools de lectura que construí reciben hoy ese 503.
+
+• Mi propuesta, sin acordar. Lectura, permitida a agentes, nivel user: finding.list y audit.get. Escritura, denegada a agentes: finding.resolve (contributor), y finding.correct, audit.set y audit.run (maintainer).
+
+• Por eso no construí tools de resolver ni de correr auditorías: con esa propuesta un agente siempre recibiría insufficient_scope, y en NORTE el token además lleva via = mcp.
+
+• Puerta de dos sentidos: los niveles se cambian en las dos tablas. Recomiendo la propuesta, porque un agente lee hallazgos pero no los cambia. Y recomiendo diferir el auditor del 13-nov salvo que NORTE lo pida.
+
+D) kb.entity.merge
+
+• Está en nivel maintainer, en Access y en common, y no está en agent_deny_list. Lo verifiqué en Access; en common es la misma tabla, pero no la leí línea por línea.
+
+• Con esa tabla, nada impide que un agente con nivel maintainer fusione dos entidades, y la fusión no se deshace.
+
+• La fusión es una puerta de un solo sentido; la lista de denegación, de dos. Recomiendo negarla a agentes en los dos lugares.
+
+E) Publicación directa
+
+• version.publish está en el techo registry:write del BFF y permitida a agentes. Tu API #35 también decide la publicación directa en proceso. El ADR 0027 del BFF dice que la política no impone por sí sola un actor humano (via = web).
+
+• Falta decidir si, en una organización que no exige aprobación, un agente publica una versión sin intervención humana.
+
+• Hoy es de dos sentidos: no existe tool de publicación, y no construyo ninguna hasta tu respuesta. No tengo recomendación: el ADR 0027 no fija esa regla.
+
+F) create_draft y allowlist
+
+• resource.allowlist.update está "reserved" en Access. resource.create_draft figura en contributor, pero un relevamiento mío, que no volví a verificar, dice que no se evalúa porque crear un recurso no tiene un descriptor previo.
+
+• Falta saber si en NORTE un agente necesita crear drafts y editar la allowlist. Para cada sí, hay que definir cómo se decide.
+
+• Puerta de dos sentidos: la respuesta sólo fija qué construir. No tengo recomendación: depende de qué necesita NORTE.
+
+Y dos cosas más, sin urgencia
+
+• Las 15 sub-tareas del hito con su PR ya integrado siguen en "In review/test", y los ítems 16 a 19 y 21 siguen en "Planned" aunque están hechos.
+
+• mcp #44 y #46 entraron con un job en FAILURE y dos CANCELLED.
+
+Lo que ya decidimos y no necesita tu respuesta: no toco nada que tú tomaste del hito. Cerré mis duplicados (Portal #61 y #62, MCP #47 y #48). No hay tools para lo que Access veta a agentes. Todo va detrás de flags apagadas, con el MCP desplegado antes que el BFF.
+
+PREGUNTAS (responde por número)
+
+1. (A) ¿Agrego yo las dos acciones a LIVE_ACTIONS, o lo haces tú?
+
+2. (B) Infra #140: ¿lo integro, lo parto en módulo y cableado, o lo cierro?
+
+3. (C) ¿Publicas las seis acciones del auditor en Access y en common con mis niveles?
+
+4. (C) ¿Difiero el auditor del 13-nov, salvo que NORTE lo pida?
+
+5. (D) ¿Agregas kb.entity.merge a agent_deny_list en Access y en common?
+
+6. (E) En una organización que no exige aprobación, ¿un agente puede publicar directo?
+
+7. (F) ¿En NORTE un agente necesita crear drafts?
+
+8. (F) ¿En NORTE un agente necesita editar la allowlist?
+
+9. (Notion) ¿Mueves tú esas tareas a su estado real, o las muevo yo con tu OK?
+
+10. (mcp) ¿Eran esperados esos jobs de mcp #44 y #46?
+```
+
+Nota para ti:
+
+• Abierto, fecha límite: ni tu pedido ni el mensaje dicen para cuándo necesitas las respuestas (sólo aparece el 13-nov del auditor). Si existe, ponla en la primera línea; la defines tú.
+
+• Abierto: el mensaje no dice si Infra #140 incluye s3:PutObject, la barrida o If-None-Match. Si los incluye, dilo en B: integrarlo destrabaría la edición de archivos. Lo sabes tú.

@@ -1,0 +1,67 @@
+```text
+Lena, necesito tus decisiones sobre permisos de agentes, el auditor y la infraestructura para avanzar con la edición de archivos y el alcance de la entrega. No tengo una fecha límite confirmada; el auditor está planteado para el 13-nov.
+
+Cada acción, como resource.edit_file, tiene un id y una clase de permiso. En el perfil Atlas decide Access; en NORTE deciden Core o la API en proceso con el motor de common. Ambas tablas deben conocer cada acción nueva. Tu trabajo de hoy ya respondió mis preguntas sobre el login de NORTE con Auth0, la lectura de org:member como org:<id>:user y la decisión del Registry en NORTE (Core #159, API #35, Access #41, BFF #58 y #60, common 0.4.0).
+
+LIVE_ACTIONS (solo perfil Atlas)
+
+• Al leer main de Access (b2a697e), comprobé que LIVE_ACTIONS contiene 13 acciones, pero no resource.edit_file ni resource.dependency.set. Ambos ids figuran en el modelo de roles con nivel contributor y no se les niegan a agentes. API #33 y #34 ya están en main con la flag apagada; con Access, la API recibiría "bounded" y respondería 503, como ocurrió en tu #40.
+
+• En mi búsqueda en common no encontré LIVE_ACTIONS; API #35 decide en proceso para NORTE. Propongo agregar las dos acciones en Access con un PR y un test, siguiendo tu #40.
+
+1. ¿Agregas tú las dos acciones a LIVE_ACTIONS o preparo yo el PR?
+
+Las seis acciones del auditor
+
+• Mi búsqueda no encontró kb.finding.list, kb.finding.resolve, kb.finding.correct, kb.audit.get, kb.audit.set ni kb.audit.run en Access ni en common. Core #159 responde 503 authorization_contract_error para esta familia en NORTE y Core responde lo mismo en Atlas.
+
+• Propongo publicar en ambos lugares las lecturas finding.list y audit.get con nivel user y permitidas a agentes; y las escrituras finding.resolve con nivel contributor, y finding.correct, audit.set y audit.run con nivel maintainer, todas denegadas a agentes. Si un agente intenta una escritura bajo esa propuesta, recibiría insufficient_scope. En NORTE el token también lleva via = mcp. Construí las dos lecturas, pero no tools para resolver hallazgos ni correr auditorías.
+
+2. ¿Publicas las seis acciones en Access y common con esos niveles y permisos?
+
+• Propongo diferir el auditor del 13-nov salvo que NORTE lo pida.
+
+3. ¿Entra el auditor el 13-nov o lo diferimos?
+
+kb.entity.merge
+
+• La acción de fusionar entidades tiene nivel maintainer en Access y common. Comprobé que no está en la lista de denegación de agentes de Access; en common identifiqué la misma tabla, pero no la leí línea por línea. Una fusión no se deshace. Recomiendo denegarla a agentes en ambos lugares para evitar una fusión irreversible hecha por un agente.
+
+4. ¿Agregas kb.entity.merge a agent_deny_list en Access y common?
+
+Publicación directa
+
+• version.publish está en el techo registry:write del BFF y permitida a agentes; API #35 también decide la publicación directa en proceso. El ADR 0027 del BFF dice que la política no impone por sí sola un actor humano (via = web). Si una organización no exige aprobación, permitir la publicación directa dejaría que un agente publique; denegarla impediría esa publicación por el agente. No construyo una tool de publicación hasta conocer la regla.
+
+5. ¿Puede un agente publicar directamente en una organización que no exige aprobación?
+
+create_draft y allowlist
+
+• resource.allowlist.update figura como "reserved" en Access y resource.create_draft figura en contributor. Mi relevamiento anterior, sin re-verificar, indica que crear un recurso no evalúa esta última acción porque no tiene un descriptor previo. Si NORTE necesita alguna de estas capacidades para agentes, falta definir cómo se decide el permiso. No tengo recomendación sobre publicación directa ni sobre estas dos necesidades de NORTE.
+
+6. ¿Necesita un agente crear drafts en NORTE?
+
+7. ¿Necesita un agente editar la allowlist en NORTE?
+
+Infra, para encender la edición de archivos
+
+• El rol de la API sobre el bucket del Registry es de solo lectura. Para REGISTRY_DRAFT_FILE_WRITE_ENABLED hacen falta s3:PutObject sobre drafts/*, una barrida de huérfanos o un ciclo de vida del bucket, e If-None-Match en la librería de clientes de Python.
+
+• Infra #140, para endurecer el bucket, está en pausa porque toca stack-ecs, tu stack de prueba. Fusionarlo incluye ese cableado; partirlo separa el módulo del cableado; cerrarlo deja esta propuesta sin integrar. No tengo base para recomendar una de las tres opciones.
+
+8. ¿Fusiono Infra #140, lo parto en módulo y cableado, o lo cierro?
+
+Y dos cosas de Notion, sin urgencia
+
+• Las 15 sub-tareas del hito con PR ya fusionado siguen en "In review/test"; los ítems 16 a 19 y 21 siguen en "Planned" aunque están hechos. Puedo moverlos yo con tu OK.
+
+9. ¿Los mueves tú o los muevo yo?
+
+• mcp #44 y #46 entraron con un job en FAILURE y dos CANCELLED.
+
+10. ¿Esos resultados eran esperados?
+
+Lo que ya decidimos y no necesita tu respuesta: no toco nada que tú tomaste del hito. Cerré mis duplicados (Portal #61 y #62, MCP #47 y #48). No hay tools para lo que Access veta a agentes. Todo va detrás de flags apagadas, con el MCP desplegado antes que el BFF.
+```
+
+Nota: la fecha límite para las decisiones está abierta. El material solo menciona el 13-nov para el auditor y no identifica a quien fija la fecha. La presencia de kb.entity.merge en la lista de denegación de common y la evaluación de resource.create_draft siguen sin verificar línea por línea; el material no asigna responsable para confirmarlas. No tuve acceso a los repositorios ni a Slack para comprobar el estado o las necesidades de NORTE.

@@ -1,0 +1,5 @@
+**20 de 23 criterios en `main` —87,0 %—**
+Ya en la rama principal: desde el 29/10 entraron 7 PR mergeadas y otras estaban por mergearse.
+Falta mergear y shippear la corrección del visor.
+Podés explicarlo así:
+Tenés razón, mi respuesta anterior no había incluido esos jobs.

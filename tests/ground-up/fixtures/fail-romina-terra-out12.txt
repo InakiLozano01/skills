@@ -1,0 +1,37 @@
+```text
+Romina, de las 9 mejoras que pidieron las clínicas, 2 están en producción, 2 están en un entorno de prueba interno, 3 están en revisión o desarrollo y 2 aún no empezaron. Por tanto, faltan 7 para que toda la lista esté en producción. Una de esas 7 es un punto duplicado que se cerrará junto con otro.
+
+YA EN PRODUCCIÓN (2)
+
+• Las clínicas pueden exportar la agenda a Google Calendar desde el 30 de octubre.
+
+• Las clínicas pueden distinguir los tipos de tratamiento por colores desde el 30 de octubre.
+
+EN PRUEBA INTERNA (2)
+
+• Los recordatorios por WhatsApp 24 horas antes del turno y el bloqueo de turnos duplicados del mismo paciente en el mismo día ya están en el entorno de prueba interno. Según el estado compartido, aún no están en producción.
+
+EN REVISIÓN O DESARROLLO (3 PUNTOS)
+
+• Cuando alguien cancela, la lista de espera ofrecerá el turno a la primera persona de la lista. El cambio tiene una revisión aprobada y espera una segunda, que suele tardar alrededor de un día hábil.
+
+• La vista semanal para recepción sigue en desarrollo: fallan pruebas relacionadas con las zonas horarias de las clínicas de Argentina y Uruguay. El equipo de desarrollo estimó que faltan uno o dos días más.
+
+• El formato de fecha DD/MM para la clínica de Montevideo está registrado como un punto duplicado del trabajo de la vista semanal. Según desarrollo, se cerrará junto con esa mejora.
+
+SIN EMPEZAR (2)
+
+• Los turnos recurrentes de ortodoncia cada cuatro semanas aún no empezaron. Desarrollo estimó unos tres días de trabajo; la fecha de inicio está pendiente.
+
+• El cobro de la seña, el depósito que paga el paciente al reservar, está bloqueado y aún no empezó. Romina, necesitas decidir si se devuelve cuando el paciente cancela con más de 48 horas de anticipación.
+
+CUÁNDO PODEMOS CERRARLO
+
+• Las publicaciones en producción se hacen los jueves. El jueves 5 de noviembre es la próxima oportunidad para publicar las 2 mejoras que ya están en prueba interna, pero el material disponible no confirma que estén programadas para esa fecha.
+
+• Para la reunión del viernes 6, aún no hay una fecha fiable para las 7 mejoras pendientes: falta tu decisión sobre la seña y una estimación de ese trabajo, además de confirmar cuándo empezarán los turnos recurrentes. Tampoco hay una fecha confirmada para publicar las mejoras que siguen en revisión o desarrollo.
+
+• Hoy puedes definir la regla de devolución de la seña. Cuando desarrollo estime ese trabajo, confirme el inicio de los turnos recurrentes y termine la revisión y las pruebas pendientes, podremos acotar la fecha de cierre. Queda por confirmar quién del equipo de desarrollo será responsable de dar esa fecha.
+```
+
+Nota: el estado proviene del material compartido; no fue posible contrastarlo con el repositorio, Notion ni producción. El material no incluye criterios de aceptación escritos ni identifica a la persona de desarrollo responsable de la fecha.

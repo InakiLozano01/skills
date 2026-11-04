@@ -1,0 +1,81 @@
+```text
+Lena, necesito que cierres decisiones sobre permisos de agentes, publicación y edición de archivos para definir qué herramientas puedo construir y qué falta para activar la edición. El 13-nov es la fecha posible de entrada del auditor, no el plazo para responder; el mensaje no fija una fecha límite general.
+
+CONTEXTO
+
+Cada acción (por ejemplo, `resource.edit_file`) tiene un id y una clase de permiso. En el perfil Atlas, Access, el servicio que autoriza esas acciones, decide si se permite. En NORTE, el otro flujo de autorización, Core o la API deciden en proceso usando `common`, la tabla compartida de permisos. Cada acción nueva debe aparecer en las listas que correspondan.
+
+LIVE_ACTIONS (solo Atlas)
+
+En la lectura de `main` que hice en b2a697e, `LIVE_ACTIONS`, la lista de acciones que Access puede autorizar, tenía 13 y no incluía `resource.edit_file` ni `resource.dependency.set`. Los dos ids existen en el modelo de roles, con nivel contributor, y no se niegan a agentes. Mis API #33 (pins de dependencias) y #34 (edición de archivos de draft) ya están en `main`, con la flag apagada. Si la API consulta Access, recibiría “bounded” y respondería 503, como pasó en tu #40. En NORTE esto no aplica: no encontré `LIVE_ACTIONS` en `common`, y tu API #35 decide en proceso.
+
+Recomiendo que yo lo agregue en un PR de dos líneas con una prueba, siguiendo tu patrón de #40; tú solo tendrías que revisarlo. Si lo haces tú, te quedas con el cambio y su prueba. Mientras falte, esas dos acciones pueden responder 503 al encender la flag.
+
+1. ¿Prefieres que lo agregue yo en un PR pequeño con prueba o lo haces tú?
+
+Las seis acciones del auditor
+
+Una búsqueda de código en Access y `common` no encontró ninguna de estas seis acciones: `kb.finding.list`, `kb.finding.resolve`, `kb.finding.correct`, `kb.audit.get`, `kb.audit.set` y `kb.audit.run`. En NORTE, Core #159 responde 503 `authorization_contract_error` para esa familia; en Atlas Core responde igual.
+
+Propongo estos niveles: `kb.finding.list` y `kb.audit.get` en user, permitidas a agentes; `kb.finding.resolve` en contributor, pero denegada a agentes; y `kb.finding.correct`, `kb.audit.set` y `kb.audit.run` en maintainer, también denegadas a agentes. Ya construí las dos lecturas. No construí herramientas para resolver hallazgos ni correr auditorías, porque los agentes recibirían `insufficient_scope` y en NORTE el token también lleva `via=mcp`. Recomiendo publicar esos niveles en Access y `common`; así las dos lecturas podrían pasar el contrato, mientras que los agentes seguirían sin poder escribir.
+
+2. ¿Apruebas estos seis niveles en Access y `common`?
+
+Recomiendo diferir el auditor salvo que NORTE lo pida: hoy solo están construidas las dos lecturas, no las herramientas para resolver ni ejecutar. El 13-nov es la fecha que aparece para su posible entrada.
+
+3. ¿Entra el auditor el 13-nov o lo diferimos hasta que NORTE lo pida?
+
+`kb.entity.merge`
+
+`kb.entity.merge` está en maintainer en Access y `common`. En Access comprobé que no figura en `agent_deny_list`, la lista que bloquea acciones de agentes; el mensaje original dice que `common` tiene la misma tabla, aunque no se revisó fila por fila. Fusionar entidades no se deshace, así que recomiendo bloquear esta acción a los agentes en ambos lugares.
+
+4. ¿La agregas a `agent_deny_list` en Access y `common`?
+
+Publicación directa
+
+`version.publish` está permitida a agentes dentro del límite `registry:write` del BFF. Tu API #35 también decide la publicación directa en proceso. El ADR 0027 del BFF dice que la política no exige por sí sola un actor humano (`via=web`). Sigue abierta la regla para una organización que no exige aprobación. Si el agente puede publicar, lo hace sin intervención humana; si no puede, una persona debe hacerlo aunque esa organización no exija aprobación. No tengo base para recomendar una opción.
+
+5. En una organización que no exige aprobación, ¿puede un agente publicar directo?
+
+`create_draft` y allowlist
+
+`resource.allowlist.update` figura como “reserved” en Access. `resource.create_draft` figura en contributor, pero mi relevamiento inicial, aún sin re-verificar, indica que crear un recurso no se evalúa porque no hay un descriptor previo. No está confirmado que esa sea la regla actual en `main`. No tengo base para recomendar si los agentes necesitan estas capacidades en NORTE. Si no hacen falta, las excluyo; si hacen falta, todavía hay que definir cómo autorizar cada una.
+
+6. ¿Necesitan los agentes crear drafts en NORTE?
+
+7. Si sí, ¿qué regla debe autorizar `resource.create_draft` en NORTE?
+
+8. ¿Necesitan los agentes editar la allowlist en NORTE?
+
+9. Si sí, ¿qué regla debe autorizar `resource.allowlist.update` en NORTE?
+
+Infra para encender la edición de archivos
+
+El rol de la API sobre el bucket del Registry es de solo lectura. Para encender `REGISTRY_DRAFT_FILE_WRITE_ENABLED` hacen falta `s3:PutObject` sobre `drafts/*`, limpiar huérfanos (o configurar el ciclo de vida del bucket) y agregar `If-None-Match` a la librería de clientes de Python. Infra #140, que endurece el bucket, está en pausa porque toca `stack-ecs`, tu stack de prueba. Hay tres opciones:
+
+• Integrar el PR en su estado actual deja el cambio del bucket tocando `stack-ecs`, el stack de prueba; el efecto no está descrito en el material.
+• Separar el módulo y el cableado deja dos partes por integrar.
+• Cerrar el PR deja sin resolver cómo cubrir los requisitos para encender la edición.
+
+No tengo datos para recomendar una ruta.
+
+10. ¿Qué hacemos con Infra #140: integrarlo como está, separarlo en módulo y cableado, o cerrarlo?
+
+SIN URGENCIA: NOTION Y MCP
+
+El mensaje no nombra el hito. Sus 15 sub-tareas siguen en “In review/test” aunque el PR ya se integró; los ítems 16 a 19 y 21 siguen en “Planned” aunque están hechos. Si los actualizas tú, haces el cambio directamente; si los actualizo yo, necesito tu OK.
+
+11. ¿Qué hito es?
+
+12. ¿Actualizas tú esos estados o me das el OK para moverlos yo?
+
+Para MCP #44 y #46, el resumen disponible junta un job en FAILURE y dos en CANCELLED, pero no indica qué job corresponde a cada PR.
+
+13. ¿Era esperada esa combinación de resultados?
+
+YA DECIDIDO
+
+No tocaré nada que tú ya elegiste para el hito. Cerré mis duplicados (Portal #61 y #62, MCP #47 y #48). No construí herramientas para acciones que Access veta a agentes. Todo queda detrás de flags apagadas, con MCP desplegado antes que BFF.
+```
+
+Nota para ti (no copiar): siguen sin verificar `create_draft` y la fila de `common`; tampoco constan la necesidad de drafts o allowlist en NORTE ni el impacto de las rutas de Infra. La fuente no identifica el hito, no relaciona jobs con PRs ni asigna quién debe validar `common` o fijar un plazo general. Solo da el 13-nov como posible entrada del auditor. Usé solo el archivo del caso, sin consultar repositorios, Slack ni Notion.

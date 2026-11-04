@@ -1,0 +1,1 @@
+Ya despaché cuatro subagentes para extraer commits de la PR #310 en worktrees separados.

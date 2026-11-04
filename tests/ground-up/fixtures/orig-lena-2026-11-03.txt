@@ -1,0 +1,37 @@
+Lena, necesito 6 decisiones tuyas. Las fui reduciendo leyendo lo que mergeaste hoy (Core #159, API #35, Access #41, BFF #58 y #60, common 0.4.0). Eso ya responde tres preguntas mías, así que no las repito: el login de NORTE con Auth0, cómo se lee org:member (como org:<id>:user) y cómo decide el Registry en NORTE (en proceso, con el motor de common).
+
+Contexto en dos líneas. Cada acción (por ejemplo resource.edit_file) tiene un id y una clase de permiso. En el perfil Atlas las decide el servicio Access, y en NORTE las decide Core o la API en proceso con el motor de common. Las dos tablas tienen que conocer cada acción nueva.
+
+1) LIVE_ACTIONS (sólo perfil Atlas)
+• resource.edit_file y resource.dependency.set no están en LIVE_ACTIONS de Access. Lo verifiqué leyendo main (b2a697e): contiene 13 acciones, y esas dos no. Los ids sí existen en el modelo de roles, nivel contributor, y no se le niegan a agentes.
+• Mis API #33 (pins de dependencias) y #34 (edición de archivos de draft) ya están en main con la flag apagada. Con el servicio Access, la API recibiría "bounded" y respondería 503, como te pasó en tu #40.
+• En NORTE no aplica: busqué LIVE_ACTIONS en common y no existe, y tu API #35 decide en proceso.
+• ¿Lo agregas tú, o lo hago yo en un PR de dos líneas y un test, mismo patrón que tu #40?
+
+2) Las seis acciones del auditor
+• kb.finding.list, kb.finding.resolve, kb.finding.correct, kb.audit.get, kb.audit.set y kb.audit.run no existen ni en Access ni en common (búsqueda de código en ambos, cero resultados). En NORTE, Core #159 responde 503 authorization_contract_error para esa familia; en Atlas, Core responde lo mismo.
+• Mi propuesta, sin acordar. Lectura, permitida a agentes, nivel user: finding.list y audit.get. Escritura, denegada a agentes: finding.resolve (contributor), y finding.correct, audit.set y audit.run (maintainer).
+• Por eso no construí ninguna tool de resolver ni de correr auditorías: un agente siempre recibiría insufficient_scope, y en NORTE el token también lleva via = mcp. Sí construí las dos lecturas.
+• ¿Las publicas en los dos lugares (Access y common) con esos niveles? ¿Y el auditor entra el 13-nov? Yo lo difiero salvo que NORTE lo pida.
+
+3) kb.entity.merge
+• Está en el nivel maintainer, tanto en Access como en common, y NO está en la lista de denegación de agentes (la verifiqué en Access; en common es la misma tabla, sin leerla línea por línea).
+• Fusionar entidades no se deshace. Recomiendo negarla a agentes. ¿La agregas a agent_deny_list en los dos lugares?
+
+4) Publicación directa
+• version.publish está en el techo registry:write del BFF y permitida a agentes. Tu API #35 también decide la publicación directa en proceso. El ADR 0027 del BFF dice que la política no impone por sí sola un actor humano (via = web).
+• ¿En una organización que no exige aprobación, un agente puede publicar directo? Hasta saberlo, no construyo ninguna tool de publicación.
+
+5) create_draft y allowlist
+• resource.allowlist.update está "reserved" en Access, y resource.create_draft figura en contributor, pero un relevamiento mío (sin re-verificar) dice que no se evalúa porque crear un recurso no tiene un descriptor previo.
+• ¿Un agente necesita crear drafts o editar la allowlist en NORTE? Si sí, hay que definir cómo se decide.
+
+6) Infra, para encender la edición de archivos
+• El rol del API sobre el bucket del Registry es de sólo lectura. Para REGISTRY_DRAFT_FILE_WRITE_ENABLED hacen falta s3:PutObject sobre drafts/*, una barrida de huérfanos (o ciclo de vida del bucket) e If-None-Match en la librería de clientes de Python.
+• Mi Infra #140 (endurecer el bucket) está en pausa porque toca stack-ecs, tu stack de prueba. ¿Lo mergeo, lo parto en módulo y cableado, o lo cierro?
+
+Y dos cosas de Notion, sin urgencia
+• Las 15 sub-tareas del hito con PR ya mergeado siguen en "In review/test", y los ítems 16 a 19 y 21 siguen en "Planned" aunque están hechos. ¿Las mueves tú, o las muevo yo con tu OK?
+• mcp #44 y #46 entraron con un job en FAILURE y dos CANCELLED. ¿Era esperado?
+
+Lo que ya decidimos y no necesita tu respuesta: no toco nada que tú pickeaste del hito. Cerré mis duplicados (Portal #61 y #62, MCP #47 y #48). No hay tools para lo que Access veta a agentes. Todo va detrás de flags apagadas, con el MCP desplegado antes que el BFF.

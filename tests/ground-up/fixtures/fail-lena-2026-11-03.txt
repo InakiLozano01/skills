@@ -1,0 +1,9 @@
+Lena, necesito 6 decisiones tuyas. Las fui reduciendo leyendo lo que mergeaste hoy (Core #159, API #35, Access #41, BFF #58 y #60, common 0.4.0). Eso ya responde tres preguntas mías, así que no las repito: el login de NORTE con Auth0, cómo se lee org:member (como org:<id>:user) y cómo decide el Registry en NORTE (en proceso, con el motor de common).
+
+2) Las seis acciones del auditor
+• ¿Las publicas en los dos lugares (Access y common) con esos niveles? ¿Y el auditor entra el 13-nov? Yo lo difiero salvo que NORTE lo pida.
+
+6) Infra, para encender la edición de archivos
+• Mi Infra #140 (endurecer el bucket) está en pausa porque toca stack-ecs, tu stack de prueba. ¿Lo mergeo, lo parto en módulo y cableado, o lo cierro?
+
+Lo que ya decidimos y no necesita tu respuesta: no toco nada que tú pickeaste del hito.
