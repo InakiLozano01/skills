@@ -48,7 +48,6 @@ When the report is meant to be pasted into Slack or chat, or when the user asks 
 
 - Write each bullet so it stays true when someone quotes it alone in another thread: it names its subject and its state.
 - Write dates as absolute dates (`"el jueves 5 de noviembre"`), so the message stays right after the day it was sent.
-
 - Place the recipient-facing message **first**, inside copyable code blocks using plain-text headers and `•` bullets separated by blank lines so pasting into Slack preserves the layout. Place any operational notes for the user **after** the copyable block.
 - When a thread is requested or standard for a full progress report, split the output into two copyable blocks:
   - **Message 1 (thread root)**:
@@ -65,12 +64,11 @@ Done when every item below holds:
 
 - The cold reader can say what is done, what is left, and the date range, in their own words.
 - Every item of the traceability matrix appears as an item (a count never replaces a list), every bullet stays true when quoted alone, and every date is absolute.
-
 - All explorations and document comparisons finished before writing, and the **traceability matrix** accounts for every item of any referenced spec or feedback document.
 - A full report contains all five sections; a compact `"¿cuánto falta?"` reply contains the BLUF headline with partition counts, the state buckets in `•` bullets, and the constructive ETA closing with a date range, its assumption, what closes today, and the event that narrows the range.
 - The BLUF / Executive summary uses plain words with zero unglossed internal names, states whether the work is available to users yet, and is the summary of the sections below it: every count, date, and exception in it matches them.
 - Every bullet states a complete clause that shows the concrete behaviour, shows the concrete case of this project, and names its certainty and where it was verified.
 - Merged code, deployed code, and code verified in an environment are distinguished explicitly, and internal git mechanics stay backstage behind one plain phrase.
 - For an engineering or user reader, PR or ticket links/numbers back every item that has them.
-- Every blocker, ask, or Open item names the person who owns it and the sources you checked that came back empty (which sources were checked).
+- Every blocker, ask, or Open item names the person who owns it and the sources you checked that came back empty.
 - For Slack or copy-paste messages, the recipient's message appears first inside a copyable block with plain-text headers and `•` bullets.
