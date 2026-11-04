@@ -254,4 +254,3 @@ Before: "Migrar ahora incluye la migración; esperar la deja para después."
 
 After: "Migrar el martes corta el servicio 20 minutos en horario de atención. Esperar al sábado evita el corte, pero Finanzas recibe una semana más de reportes duplicados."
 </example>
-
