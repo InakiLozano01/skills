@@ -4,7 +4,7 @@ A **long text** is a document, a report, an onboarding guide, or an explanation 
 
 - Write headings that state the point in full words (a complete claim or `"who does what, and when"`), so a reader who scans only the headings follows the whole argument. Use sentence case.
 - When a section uses a term whose **appositive gloss** appeared in a distant earlier section, include a short reminder gloss where the term reappears.
-- Place decided rules and open items in separate sections. In the open section, **document the null** for each item (what sources were checked and who owns the decision).
+- Place decided rules and open items in separate sections. In the open section, name for each item the sources you checked that came back empty and the person who owns the decision.
 - Use a table when the same fields repeat across three or more rows, such as module, responsibility, and verification state.
 - When the text describes a flow with three or more moving parts, include a Mermaid diagram beside the prose, while keeping the prose complete on its own.
 

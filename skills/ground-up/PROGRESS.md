@@ -2,9 +2,9 @@
 
 A **progress report** serves a reader whose ask is `track`: a milestone update, a periodic report, or a reply to `"how much is left to close X?"` (`¿cuánto falta?`, `¿qué ya está y qué falta?`). It applies every rule in [SKILL.md](SKILL.md) and adds the structure below.
 
-Anchor the report in the product and the concrete problem each piece solves. When the request references a spec, feedback document, or checklist, use the **traceability matrix** from `Gather` so every item in that document is accounted for. The spec and acceptance criteria are the measure; the code, PRs, and tests are the evidence. When the material has no written acceptance criteria, measure against the behaviour the work is meant to deliver, and state that no written criteria exist yet.
+Anchor the report in the product and the concrete problem each piece solves. When the request references a spec, feedback document, or checklist, build a **traceability matrix** during Gather, one row per item of that document with its current state (in `main`, in an open PR or branch, unstarted, or waiting on a decision), so every item in that document is accounted for. The spec and acceptance criteria are the measure; the code, PRs, and tests are the evidence. When the material has no written acceptance criteria, measure against the behaviour the work is meant to deliver, and state that no written criteria exist yet.
 
-Present the implementation as a **deep module**: expose product behaviours and their verification state as the interface, and compress internal git mechanics (merge conflicts, worktrees, cherry-picks, subagent dispatches) into one plain phrase such as `"implemented and being split into smaller changes for review"`.
+Put product behaviours and their verification state on stage, and keep internal git mechanics (merge conflicts, worktrees, cherry-picks, subagent dispatches) **backstage** behind one plain phrase such as `"implemented and being split into smaller changes for review"`.
 
 ## Two sizes (both open with a BLUF and use bullets inside the copyable message)
 
@@ -14,7 +14,7 @@ Format the report in five sections with bullets inside each one:
 
 1. **Executive summary — BLUF (`Resumen ejecutivo`)**: 2–4 bullets in plain words, with zero unglossed internal names. State what already works and where it was verified, how the parts connect today, and what remains before users or the business can use the result.
 2. **Context and scope (`Contexto`)**:
-   - What the system or product does, in one sentence from grounded prerequisites.
+   - What the system or product does, in one sentence from the reader's common ground.
    - What the **global task** is, and which slice of that task this update covers.
    - The main repositories or components involved, with an **appositive gloss** for each one's role.
 3. **What advanced (`Qué avanzó`)**: one bullet per **capability or problem solved**, built ground up inside:
@@ -28,7 +28,7 @@ Format the report in five sections with bullets inside each one:
    - The next concrete steps in order.
    - What users or `main` still experience today (for example, endpoints that return unavailable until the full flow is verified).
 5. **Asks, doubts, and dependencies (`Pedidos, dudas y dependencias`)**:
-   - Every decision, approval, or action needed from the reader or another person, naming who owns each one. When a decision requires weighing options, shape it as in [DECISION-REQUEST.md](DECISION-REQUEST.md).
+   - Every decision, approval, or action needed from the reader or another person, naming the one person who owns each one. When a decision requires weighing options, shape it as in [DECISION-REQUEST.md](DECISION-REQUEST.md).
    - Open items, **documenting the null**: name the external sources or environments that could not be checked in the session and what they are needed for.
 
 ### 2. Compact status reply (for `"¿cuánto falta?"` / `"what is done and what is left in document X?"`)
@@ -40,11 +40,14 @@ When the user asks what to reply to a narrower question about how much is left t
    - **Already integrated (`Ya resuelto en main`)**: bullets naming the concrete behaviours that work today and where they were verified (`main`, local tests, or production).
    - **In review or integration (`En revisión e integración`)**: bullets naming the behaviours already coded in branches or PRs that are being reviewed, split, or developed in parallel, stated in plain words.
    - **Remaining or waiting on decisions (`Qué falta o requiere definición`)**: bullets separating what still requires engineering work or evaluation from what waits on a decision by a named owner (such as Compliance, Operations, or Product).
-3. **Constructive ETA closing (`Cuándo podemos cerrarlo`)**: when asked for a date or `"hoy"`, state what **can** close today (such as updating the tracking document with each item's current status and open questions, or deploying the items already in `main`), and name the **concrete condition that unlocks the full estimate** (for example, `"cuando hoy terminen las revisiones de las primeras cuatro entregas y Operaciones confirme las reglas pendientes"`).
+3. **Constructive ETA closing (`Cuándo podemos cerrarlo`)**: answer `"when?"` and `"how much is left?"` with a number, even when no one has committed to a date; that number is an **Inferred** estimate. Give today's count from the traceability matrix, and give the date as a range that sits where the work stands on the **cone of uncertainty**, with the assumption behind it (for example, `"entre el jueves y el martes, si Operaciones confirma las reglas esta semana"`). Then state what **can** close today (such as updating the tracking document with each item's current status and open questions, or deploying the items already in `main`), and name the **concrete event that narrows the range** (for example, `"cuando hoy terminen las revisiones de las primeras cuatro entregas y Operaciones confirme las reglas pendientes"`).
 
 ## Slack and thread format
 
 When the report is meant to be pasted into Slack or chat, or when the user asks for a thread (`:thread:` / hilo):
+
+- Write each bullet so it stays true when someone quotes it alone in another thread: it names its subject and its state.
+- Write dates as absolute dates (`"el jueves 5 de noviembre"`), so the message stays right after the day it was sent.
 
 - Place the recipient-facing message **first**, inside copyable code blocks using plain-text headers and `•` bullets separated by blank lines so pasting into Slack preserves the layout. Place any operational notes for the user **after** the copyable block.
 - When a thread is requested or standard for a full progress report, split the output into two copyable blocks:
@@ -60,11 +63,14 @@ When the user asks for a long document or a table-based status report directly i
 
 Done when every item below holds:
 
+- The cold reader can say what is done, what is left, and the date range, in their own words.
+- Every item of the traceability matrix appears as an item (a count never replaces a list), every bullet stays true when quoted alone, and every date is absolute.
+
 - All explorations and document comparisons finished before writing, and the **traceability matrix** accounts for every item of any referenced spec or feedback document.
-- A full report contains all five sections; a compact `"¿cuánto falta?"` reply contains the BLUF headline with partition counts, the state buckets in `•` bullets, and the constructive ETA closing naming what closes today and what unlocks the final date.
-- The BLUF / Executive summary uses plain words with zero unglossed internal names and states whether the work is available to users yet.
-- Every bullet states a complete clause with concrete mechanism and behaviour, passes the portability test, and names its certainty and where it was verified.
-- Merged code, deployed code, and code verified in an environment are distinguished explicitly, and internal git mechanics stay compressed inside a deep-module phrase.
+- A full report contains all five sections; a compact `"¿cuánto falta?"` reply contains the BLUF headline with partition counts, the state buckets in `•` bullets, and the constructive ETA closing with a date range, its assumption, what closes today, and the event that narrows the range.
+- The BLUF / Executive summary uses plain words with zero unglossed internal names, states whether the work is available to users yet, and is the summary of the sections below it: every count, date, and exception in it matches them.
+- Every bullet states a complete clause that shows the concrete behaviour, shows the concrete case of this project, and names its certainty and where it was verified.
+- Merged code, deployed code, and code verified in an environment are distinguished explicitly, and internal git mechanics stay backstage behind one plain phrase.
 - For an engineering or user reader, PR or ticket links/numbers back every item that has them.
-- Every blocker, ask, or Open item names who owns the answer and documents the null (which sources were checked).
+- Every blocker, ask, or Open item names the person who owns it and the sources you checked that came back empty (which sources were checked).
 - For Slack or copy-paste messages, the recipient's message appears first inside a copyable block with plain-text headers and `•` bullets.

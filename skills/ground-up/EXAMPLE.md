@@ -5,6 +5,7 @@ The domains are invented. The examples are in Spanish; the same moves apply in E
 - [Example 1: a decision request (`decide`, domain reader)](#example-1-a-decision-request-decide-domain-reader)
 - [Example 2: a progress report in Slack thread format (`track`, engineering reader)](#example-2-a-progress-report-in-slack-thread-format-track-engineering-reader)
 - [Example 3: a compact status reply for "how much is left?" (`track`, domain/product reader)](#example-3-a-compact-status-reply-for-how-much-is-left-track-domainproduct-reader)
+- [Short contrasts: four failures in one line each](#short-contrasts-four-failures-in-one-line-each)
 
 ---
 
@@ -47,10 +48,10 @@ The outsider cannot tell what VetRed's import does, what a "ficha" or a "merge c
 
 - The message opens with a **BLUF (Bottom Line Up Front)** line that names the topic and what Clara must do, addressing her as "tú" throughout.
 - The domain basics are **grounded** next: what VetRed is, what a historia clínica is, and what the importer does. `"importer"` stays verbatim with an **appositive gloss** because the team uses that name.
-- The problem is shown through a **concrete mechanism** and scenario (**Specification by Example**: two dogs named Luna) in place of `"merges cruzados"`.
+- The problem is shown, not told, through a concrete scenario (**Specification by Example**: two dogs named Luna) in place of `"merges cruzados"`.
 - **Certainty** is explicit: reproduced with synthetic data, not verified in a real case, and the count is in progress.
 - Each option shows what changes and who carries the cost. The text states which mistake is a **one-way door** (hard to reverse) and which is a **two-way door** (cheap to fix). The recommendation gives its reason and states the rule as it would enter the spec.
-- Clara works in the **domain** bounded context, so the text speaks her **ubiquitous language** (pets, owners, vaccines, reception) and keeps the importer's code inside a **deep module**.
+- Clara works in the **domain** bounded context, so the text speaks her **ubiquitous language** (pets, owners, vaccines, reception) and keeps the importer's code **backstage**.
 - `MATCH-12`, `IMP03`, and `PR #41` are omitted because Clara does not use them to decide. The text keeps the one operational fact that changes her timing: the fix is ready and waits on her answer.
 - It ends with one short question Clara can answer with yes or no.
 
@@ -131,7 +132,7 @@ PEDIDOS, DUDAS Y DEPENDENCIAS
 
 - The update splits into two copy-ready Slack blocks: a `:thread:` opener with a **BLUF** (`RESUMEN EJECUTIVO`) in plain words and a tag for Marco, and a thread reply with the structured detail using `•` bullets and blank lines that survive copy-paste.
 - `CONTEXTO` grounds what DocVault does from zero, states the **global task** (service migration) and the slice this update covers (stage 2: the document processing path), and attaches **appositive glosses** to both repositories (`docvault-engine` and `docvault-infra`).
-- `QUÉ AVANZÓ` groups work by capability rather than listing loose PRs. Each bullet builds **ground up** inside, passes the **portability test** by showing the **concrete mechanism** solved (version 1 staying live while version 2 processes; long documents with conflicting sections requesting review), states its **certainty** and where it was verified (local tests, simulated providers), and gives Marco the PR URLs as evidence.
+- `QUÉ AVANZÓ` groups work by capability rather than listing loose PRs. Each bullet builds **ground up** inside, passes the **portability test** by showing the concrete case solved (version 1 staying live while version 2 processes; long documents with conflicting sections requesting review), states its **certainty** and where it was verified (local tests, simulated providers), and gives Marco the PR URLs as evidence.
 - `CÓMO CONVERGE Y QUÉ SIGUE` shows how the local integration branch and the two repos come together, names the next step, and states plainly what `main` still returns today.
 - `PEDIDOS, DUDAS Y DEPENDENCIAS` surfaces the review ask for Marco and **documents the null** on the Notion roadmap.
 
@@ -201,7 +202,7 @@ CUÁNDO PODEMOS CERRARLO
 
 • Hoy sí podemos dejar cerrado el documento de seguimiento actualizando el estado de los 18 puntos y dejando marcadas las preguntas para Operaciones.
 
-• Para dar una fecha de cierre de todas las correcciones en el sistema, necesito que hoy terminen las revisiones de las primeras cuatro entregas y que Operaciones confirme las reglas pendientes.
+• Si hoy terminan las revisiones de las primeras cuatro entregas y Operaciones confirma las reglas pendientes esta semana, estimamos cerrar todas las correcciones en el sistema entre el jueves 6 y el martes 11 de noviembre. La fecha se acota cuando Operaciones responda.
 ```
 
 ---
@@ -213,5 +214,44 @@ CUÁNDO PODEMOS CERRARLO
 - The update is delivered after building a complete **traceability matrix** of the feedback document against `main`, and the copy-ready Slack block comes **first**, before the internal note to the user.
 - The **BLUF** headline partitions all 18 items of the feedback document across state buckets (8 in `main`, 7 in review/integration, 3 waiting on work or definitions from Operaciones) and states that production verification is still pending.
 - The 5-paragraph prose wall becomes scannable `•` bullets grouped by state (`YA RESUELTO EN MAIN`, `EN REVISIÓN E INTEGRACIÓN`, `QUÉ FALTA O REQUIERE DEFINICIÓN`, `CUÁNDO PODEMOS CERRARLO`).
-- Every shorthand label is unpacked into a complete clause with **concrete mechanism** and behaviour or given an **appositive gloss** on first use (`"segunda firma"`, `"corrida"`, `"ficha"`), internal git conflict mechanics stay inside a **deep-module** phrase (`"ya están escritas y hoy las estamos separando en entregas chicas para revisar e integrar"`), and the pending rule **documents the null** (`"revisado en main y PRs abiertos; sin regla cerrada aún en el documento de Operaciones"`).
-- The closing answers `"¿cuánto falta / hoy?"` constructively: it separates what **can** close today (updating the 18 items in the tracking document and surfacing the questions for Operaciones) from the concrete conditions that unlock the product ETA.
+- Every shorthand label is unpacked into a complete clause that shows the concrete behaviour or given an **appositive gloss** on first use (`"segunda firma"`, `"corrida"`, `"ficha"`), internal git conflict mechanics stay **backstage** behind one plain phrase (`"ya están escritas y hoy las estamos separando en entregas chicas para revisar e integrar"`), and the pending rule **documents the null** (`"revisado en main y PRs abiertos; sin regla cerrada aún en el documento de Operaciones"`).
+- The closing answers `"¿cuánto falta / hoy?"` constructively: it separates what **can** close today (updating the 18 items in the tracking document and surfacing the questions for Operaciones) from a date range with its assumption, and names the event that narrows the range (the **cone of uncertainty**).
+
+---
+
+## Short contrasts: four failures in one line each
+
+Each pair shows one failure the tests found, with the fix last. The domains are invented.
+
+<example>
+**A reader who owns the system.** Nadia, the tech lead who wrote the billing service, gets the message.
+
+Before: "Nadia, Ledger, el servicio que registra los cobros, rechaza los reintentos de Stripe, la pasarela de pagos, porque la clave de idempotencia, el identificador que evita cobros duplicados, cambia en cada intento."
+
+After: "Nadia, Ledger rechaza los reintentos de Stripe porque la clave de idempotencia cambia en cada intento. Lo reproduje en staging con el pedido 4411. ¿Lo corrijo yo en el cliente de Stripe?"
+</example>
+
+<example>
+**A gloss the source does not give.** The material only says "Turnstile falla los lunes en la sede Norte".
+
+Before: "Turnstile, el sistema de colas de impresión, falla los lunes en la sede Norte."
+
+After: "Turnstile falla los lunes en la sede Norte." The note to the user adds: "El material no dice qué hace Turnstile; Pablo lo mantiene y puede confirmarlo."
+</example>
+
+<example>
+**An opening that the body contradicts.** The body says the Sur route still waits on a municipal permit.
+
+Before: "Las 6 rutas nuevas salen el lunes 9 de noviembre."
+
+After: "5 de las 6 rutas nuevas salen el lunes 9 de noviembre. La ruta Sur espera el permiso municipal y todavía no tiene fecha."
+</example>
+
+<example>
+**Options stated by their names.**
+
+Before: "Migrar ahora incluye la migración; esperar la deja para después."
+
+After: "Migrar el martes corta el servicio 20 minutos en horario de atención. Esperar al sábado evita el corte, pero Finanzas recibe una semana más de reportes duplicados."
+</example>
+
