@@ -4,7 +4,6 @@ Vocabulary for a skill that writes text an outsider can follow from the first li
 
 `SKILL.md` uses ten leading words: **curse of knowledge**, **common ground**, **ground up**, **appositive gloss**, **BLUF**, **certainty**, **show, don't tell**, **backstage**, **classic style**, and **cold reader**. Every other term below belongs to the disclosed file that uses it (for example **completed staff work** to `DECISION-REQUEST.md`, **traceability matrix** and **cone of uncertainty** to `PROGRESS.md`, **edit by exception** to `REWRITE.md`), or explains where a rule came from.
 
-
 ## Reader
 
 **Curse of knowledge**:
@@ -118,7 +117,7 @@ How reversible a decision is. A **one-way door** is hard to reverse and requires
 _Avoid_: Impact, severity
 
 **Progress report**:
-A structured text for a reader whose ask is `track`. It comes in two sizes, both opening with a BLUF and using `•` bullets inside the copyable message: a **full progress report** (five sections: executive summary in plain words, context with global task and slice, what advanced by capability, how it converges and what comes next, and asks/doubts/dependencies, with a `:thread:` two-message variant for Slack) and a **compact status reply** for questions like `"how much is left?"` (a 1–2 line BLUF with exact item counts from the traceability matrix, followed by state-bucket bullets for `main`, in review/integration, and pending work or decisions, closing with what closes today and what unlocks the final ETA).
+A structured text for a reader whose ask is `track`. It comes in two sizes, both opening with a BLUF and using `•` bullets inside the copyable message: a **full progress report** (five sections: executive summary in plain words, context with global task and slice, what advanced by capability, how it converges and what comes next, and asks/doubts/dependencies, with a `:thread:` two-message variant for Slack) and a **compact status reply** for questions like `"how much is left?"` (a 1–2 line BLUF with exact item counts from the traceability matrix, followed by state-bucket bullets for `main`, in review/integration, and pending work or decisions, closing with a date range, its assumption, what closes today, and the event that narrows the range).
 _Avoid_: Status update, changelog
 
 ## Certainty
@@ -131,7 +130,7 @@ _Avoid_: Confidence score, evidence level
 Checked, naming how and where it was checked: a real case, a synthetic test, or reading the code, in `main`, a PR branch, local tests, or production.
 
 **Inferred**:
-Deduced from a named fact, and unchecked. Included only when the reader needs it to decide or act, together with what check would confirm it.
+Deduced from a named fact, and unchecked. Included only when the reader needs it to decide or act, together with what check would confirm it. An estimate built from the team's own estimates or the release calendar is an inference the reader needs, given as a range with its assumption.
 
 **Gap**:
 A question the material leaves unanswered. A gap is investigated or surfaced as **Open**; claims stay strictly within what the checked sources support.
