@@ -1,10 +1,10 @@
 # Action request
 
-An **action request** asks one person to do something or to send you something (`act`): give me this data, fix these points, unblock this. When the reader has to choose between options, use [DECISION-REQUEST.md](DECISION-REQUEST.md) instead. Shape the message as **SBAR** (Situation, Background, Assessment, Recommendation), the handoff order clinicians use so the listener can act after the first sentence. It applies every rule in [SKILL.md](SKILL.md) and adds the structure below.
+An **action request** asks one person to do something or to send you something (`act`): give me this data, fix these points, unblock this. When the reader has to choose between options, use [DECISION-REQUEST.md](DECISION-REQUEST.md) instead. Shape the message as **SBAR** (Situation, Background, Assessment, Recommendation), the handoff order clinicians use so the listener can act after the first sentence. It adds the structure below to the rules in [SKILL.md](SKILL.md).
 
-## Gather the requests
+## Gather
 
-During `Gather`, list every action and every answer the material shows as pending on that person, and what each one unblocks. Mark everything else you gathered as reference: work you finished, checks that passed, context that asks nothing of this reader. Done when every item is on one of the two lists.
+List every action and every answer the material shows as pending on that person, and what each one unblocks. Mark everything else you gathered as reference: work you finished, checks that passed, context that asks nothing of this reader. Done when every item is on one of the two lists.
 
 ## Shape
 
@@ -18,9 +18,8 @@ Write the four parts in this order. They are an order, not four headings: in a s
 The requests set the size: a message with four requests is about as long as four requests need.
 
 <example>
-Before: `"Estado de la migración: 5 de 7 hallazgos hechos (detalle abajo) [...] Además necesito de ti cuatro datos."`
-After: `"Lena, necesito cuatro datos de tu entorno antes del jueves 7 para saber si dos hallazgos ya están expuestos en producción. De los 7 hallazgos, 5 están resueltos en main y 2 a medias (detalle en la página del reparto)."`
-The before opens with the writer's status and buries the request; the after opens with the request and leaves the status as one line.
+Status first: `"Estado de la migración: 5 de 7 hallazgos hechos (detalle abajo) [...] Además necesito de ti cuatro datos."`
+Request first: `"Lena, necesito cuatro datos de tu entorno antes del jueves 7 para saber si dos hallazgos ya están expuestos en producción. De los 7 hallazgos, 5 están resueltos en main y 2 a medias (detalle en la página del reparto)."`
 </example>
 
 ## Check

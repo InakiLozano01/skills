@@ -1,5 +1,5 @@
 """Each fail fixture is a real past mistake from a ground-up run; each pass fixture is approved text."""
-import pathlib, subprocess, sys, tempfile, unittest
+import pathlib, re, subprocess, sys, tempfile, unittest
 
 HERE = pathlib.Path(__file__).parent
 SCRIPT = HERE.parents[1] / "skills" / "ground-up" / "scripts" / "check_draft.py"
@@ -91,6 +91,32 @@ class CheckDraft(unittest.TestCase):
     def test_approved_text_passes(self):
         out = run("pass-fin-aprobado.txt")
         self.assertEqual(out.returncode, 0, out.stdout)
+
+
+class SkillShape(unittest.TestCase):
+    """The skill stays small: a short core, short disclosed files, and contrasts beside their rule."""
+    SKILL = HERE.parents[1] / "skills" / "ground-up"
+
+    def test_files_stay_within_their_budget(self):
+        core = (self.SKILL / "SKILL.md").read_text()
+        self.assertLessEqual(len(core.splitlines()), 45, "SKILL.md: move a branch to its disclosed file")
+        for path in self.SKILL.glob("*.md"):
+            if path.name != "SKILL.md":
+                count = len(path.read_text().split())
+                self.assertLessEqual(count, 550, f"{path.name} has {count} words: cut what SKILL.md already says")
+
+    def test_examples_sit_beside_their_rule(self):
+        self.assertFalse((self.SKILL / "EXAMPLE.md").exists(), "put a short contrast in the file that owns the rule")
+        for path in self.SKILL.glob("*.md"):
+            blocks = re.findall(r"<example>(.*?)</example>", path.read_text(), re.S)
+            self.assertLessEqual(len(blocks), 1, f"{path.name}: one contrast per file")
+            for block in blocks:
+                self.assertLessEqual(len(block.split()), 90, f"{path.name}: the contrast is longer than 90 words")
+
+    def test_every_link_resolves(self):
+        for path in self.SKILL.glob("*.md"):
+            for target in re.findall(r"\]\(([^)#]+\.md)\)", path.read_text()):
+                self.assertTrue((self.SKILL / target).exists(), f"{path.name} links to {target}")
 
 
 if __name__ == "__main__":

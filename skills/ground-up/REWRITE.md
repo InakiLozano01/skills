@@ -1,6 +1,6 @@
 # Rewrite
 
-The request points at an existing text: an earlier answer, a draft, or a report. A **rewrite** applies every rule in [SKILL.md](SKILL.md) and adds the constraints below.
+The request points at an existing text: an earlier answer, a draft, or a report. A **rewrite** adds the constraints below to the rules in [SKILL.md](SKILL.md).
 
 Before writing, count the words of the original. **Edit by exception**: keep each sentence that already serves this reader, change only the sentences that fail them, and add only what this reader lacks.
 
@@ -14,7 +14,12 @@ The **word budget** depends on the reader, unless the user asks for a different 
 - Bring in a fact from elsewhere in the material only when the passage requires it to be understood.
 - After the text, list what stayed **Open**, limited to items that change what the reader decides or does, **documenting the null** for each one. The Open list counts toward the word budget.
 
-The short contrasts at the end of [EXAMPLE.md](EXAMPLE.md) show the two rewrite failures to look for: glossing names the reader owns, and glossing what no source explains.
+<example>
+For Nadia, who wrote the billing service.
+Over-glossed: `"Ledger, el servicio que registra los cobros, rechaza los reintentos de Stripe, la pasarela de pagos, porque la clave de idempotencia cambia en cada intento."`
+Edited by exception: `"Ledger rechaza los reintentos de Stripe porque la clave de idempotencia cambia en cada intento."`
+When no source says what a name is, the name stays bare and the note to the user names who can confirm it.
+</example>
 
 ## Check
 

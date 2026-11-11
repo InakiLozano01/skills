@@ -4,6 +4,10 @@ Skills live in `skills/<name>/`. Shared vocabulary lives in `GLOSSARY.md`; chang
 
 Run `python3 tests/ground-up/test_check_draft.py` before committing a change to `ground-up`. CI runs the same command.
 
+## Shape of a skill
+
+`SKILL.md` holds what every run needs, in at most 45 lines. Each ask has one disclosed file of at most 550 words that adds only what `SKILL.md` does not say. A contrast of at most 90 words sits in the file that owns its rule, one per file; there is no examples file. `SkillShape` in `tests/ground-up/test_check_draft.py` fails a change that breaks any of these.
+
 ## Rule table
 
 When the operator corrects a `ground-up` output, add the rule here with what enforces it. A rule enforced only by prose that gets corrected again is a repeat: in the same change, move a mechanical rule (a token, a form, a number) up to the script, and turn a semantic rule (redundancy, contradiction, an invented gloss) into a cold-reader question plus a `fail-*` fixture. Each `fail-*` fixture is a real past output; a `.masked` fixture keeps the output's shape and size with every letter and digit replaced, for text that cannot be published. `--allow RULE` demotes a rule to a warning when the user asked for that wording; say so in the note to the user.

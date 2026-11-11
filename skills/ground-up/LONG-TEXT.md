@@ -1,6 +1,6 @@
 # Long text
 
-A **long text** is a document, a report, an onboarding guide, or an explanation from zero. It applies every rule in [SKILL.md](SKILL.md) and adds the structure below.
+A **long text** is a document, a report, an onboarding guide, or an explanation from zero. It adds the structure below to the rules in [SKILL.md](SKILL.md).
 
 - Write headings that state the point in full words (a complete claim or `"who does what, and when"`), so a reader who scans only the headings follows the whole argument. Use sentence case.
 - When a section uses a term whose **appositive gloss** appeared in a distant earlier section, include a short reminder gloss where the term reappears.
