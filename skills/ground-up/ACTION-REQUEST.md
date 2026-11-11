@@ -8,14 +8,14 @@ List every action and every answer the material shows as pending on that person,
 
 ## Shape
 
-Write the four parts in this order. They are an order, not four headings: in a short message the situation and the assessment share the opening paragraph, and any heading uses the reader's own words.
+Write the four parts in this order. They set an order and need no headings of their own. In a short message the situation and the assessment share the opening paragraph, and any heading uses the reader's own words.
 
-1. **Situation**, the BLUF: what you need from this person, how many requests, by when, and what they unblock. One or two sentences.
-2. **Background**: only what this reader lacks and needs in order to act, such as what changed since they last looked. Names they own stay bare. Reference items stay out of the message: give them one line with their count or a link, and list them in the notes for the user.
-3. **Assessment**: what you think is going on, how sure you are (**Certainty**), and what it costs if the request waits: the risk that stays open or the work that stays blocked. State it once, in the opening when it is the reason to act, or beside the one request it explains.
-4. **Recommendation**: the numbered requests. Each one asks for a single thing this person can do or answer, and names the form of the answer (a value, a yes, a date, a list). Add the reason only when the request does not explain itself.
+1. **Situation**, the BLUF. In one or two sentences, say what you need from this person, how many requests, by when, and what they unblock.
+2. **Background.** Give only what this reader lacks and needs to act, such as what changed since they last looked. Names they own stay bare. Reference items stay out of the message. Give them one line with their count or a link, and list them in the notes for the user.
+3. **Assessment.** Say what you think is going on, how sure you are (**Certainty**), and what it costs if the request waits, meaning the risk that stays open or the work that stays blocked. State it once, in the opening when it is the reason to act, or beside the one request it explains.
+4. **Recommendation.** These are the numbered requests. Each one asks for a single thing this person can do or answer, and names the form of the answer (a value, a yes, a date, a list). Add the reason only when the request does not explain itself.
 
-The requests set the size: a message with four requests is about as long as four requests need.
+The requests set the size. A message with four requests is about as long as four requests need.
 
 <example>
 Status first: `"Estado de la migración: 5 de 7 hallazgos hechos (detalle abajo) [...] Además necesito de ti cuatro datos."`

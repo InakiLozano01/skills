@@ -125,7 +125,7 @@ The handoff order that lets the listener act after the first sentence: what is n
 _Avoid_: Escalation template, the four labels as headings
 
 **Progress report**:
-A structured text for a reader whose ask is `track`. It comes in two sizes, both opening with a BLUF and using `•` bullets inside the copyable message: a **full progress report** (five sections: executive summary in plain words, context with global task and slice, what advanced by capability, how it converges and what comes next, and asks/doubts/dependencies, with a `:thread:` two-message variant for Slack) and a **compact status reply** for questions like `"how much is left?"` (a 1–2 line BLUF with exact item counts from the traceability matrix, followed by state-bucket bullets for `main`, in review/integration, and pending work or decisions, closing with a date range, its assumption, what closes today, and the event that narrows the range).
+A structured text for a reader whose ask is `track`. It comes in two sizes, both opening with a BLUF: a **full progress report** in five sections (summary, context, what advanced, how it converges and what comes next, asks and dependencies) and a **compact status reply** for a question like `"how much is left?"` (the BLUF with the exact count per state from the traceability matrix, one group of bullets per state, and a closing with a date range, its assumption, what closes today, and the event that narrows the range).
 _Avoid_: Status update, changelog
 
 ## Certainty

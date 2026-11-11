@@ -1,6 +1,6 @@
 # Decision request
 
-A **decision request** asks one person to decide (`decide`). Deliver **completed staff work**: settle every question the material lets you settle yourself, so the reader's part is to approve, pick, or correct your recommendation. It adds the structure below to the rules in [SKILL.md](SKILL.md).
+A **decision request** asks one person to decide (`decide`). Deliver **completed staff work**, which means you settle every question the material lets you settle yourself, so the reader's part is to approve, pick, or correct your recommendation. It adds the structure below to the rules in [SKILL.md](SKILL.md).
 
 ## Gather
 
