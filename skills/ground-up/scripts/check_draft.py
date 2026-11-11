@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 """Check a ground-up draft for the mistakes agents keep repeating.
 
-Usage: python3 check_draft.py [--decide] [--original ORIGINAL [--owner]] [--allow RULE,...] [FILE]
+Usage: python3 check_draft.py [--original ORIGINAL [--owner]] [--allow RULE,...] [FILE]
 
 Reads stdin when FILE is omitted.
---decide: one question per numbered block is an error, not a warning.
 --original: measure the rewrite's word budget against ORIGINAL (1.5x ceiling).
 --owner: the reader owns the system, so the budget ceiling is 1.2x.
 --allow: demote the named rules to warnings; use it only when the user asked for that wording.
@@ -14,6 +13,7 @@ Warnings (exit 0) list spots to reread against the reader's common ground.
 Each message names the fix. Add a rule here when a new repeat shows up.
 """
 
+import argparse
 import re
 import sys
 
@@ -95,7 +95,7 @@ def recipient_lines(text):
     return fenced or lines
 
 
-def check(text, decide=False):
+def check(text):
     errors, warnings = [], []
     seen_names = set()
     reader = recipient_lines(text)
@@ -149,14 +149,26 @@ def check(text, decide=False):
         if len(lines) >= 3:
             warnings.append((lines[0], "template", f"'{phrase}...' abre {len(lines)} líneas: dilo una vez para el grupo o varía según el caso"))
 
-    # One question per numbered block.
-    blocks = re.split(r"(?m)^\s*(?=\d+[).]\s)", text)
-    for block in blocks:
-        head = re.match(r"\s*(\d+)[).]", block)
-        if head and block.count("?") > 1:
-            msg = f"el punto {head.group(1)} hace {block.count('?')} preguntas: una pregunta por número"
-            (errors if decide else warnings).append((0, "questions", msg))
+    # One question per numbered block. A block runs to the next number or the next heading.
+    head, asked = None, 0
+    rows = text.splitlines() + ["# end"]
+    for i, raw in enumerate(rows):
+        start = re.match(r"\s*(\d+)[).]\s", raw)
+        if start or is_heading(rows, i):
+            if head and asked > 1:
+                errors.append((0, "questions", f"el punto {head} hace {asked} preguntas: una pregunta por número"))
+            head, asked = (start.group(1) if start else None), 0
+        asked += raw.count("?")
     return errors, warnings
+
+
+def is_heading(rows, i):
+    """A Markdown heading, or a short unpunctuated line that stands alone after a blank line."""
+    line = rows[i].strip()
+    if line.startswith("#"):
+        return True
+    alone = i > 0 and not rows[i - 1].strip()
+    return bool(alone and line and len(line.split()) <= 8 and not re.match(r"[•\-*\d]", line) and line[-1] not in ".?!;,")
 
 
 def words(text):
@@ -164,30 +176,28 @@ def words(text):
 
 
 def main(argv):
-    decide = "--decide" in argv
-    owner = "--owner" in argv
-    original = None
-    if "--original" in argv:
-        i = argv.index("--original")
-        original = argv[i + 1]
-        argv = argv[:i] + argv[i + 2:]
-    flagged = {i + 1 for i, a in enumerate(argv) if a == "--allow"}
-    args = [a for i, a in enumerate(argv) if not a.startswith("--") and i not in flagged]
-    text = open(args[0], encoding="utf-8").read() if args else sys.stdin.read()
-    errors, warnings = check(text, decide)
-    allowed = {r for i, a in enumerate(argv) if a == "--allow" for r in argv[i + 1].split(",")}
-    warnings += [e for e in errors if e[1] in allowed]
-    errors = [e for e in errors if e[1] not in allowed]
-    if original:
-        base = words(open(original, encoding="utf-8").read())
+    parser = argparse.ArgumentParser(usage=__doc__.split("Usage: ")[1].split("\n")[0])
+    parser.add_argument("file", nargs="?")
+    parser.add_argument("--original")
+    parser.add_argument("--owner", action="store_true")
+    parser.add_argument("--allow", default="")
+    parser.add_argument("--decide", action="store_true", help=argparse.SUPPRESS)  # accepted, no effect
+    args = parser.parse_args(argv)
+    text = open(args.file, encoding="utf-8").read() if args.file else sys.stdin.read()
+    errors, warnings = check(text)
+    if args.original:
+        base = words(open(args.original, encoding="utf-8").read())
         ratio = words(text) / base
         msg = f"{words(text)} palabras contra {base} del original ({ratio:.2f}x)"
-        if owner and ratio > 1.2:
+        if args.owner and ratio > 1.2:
             errors.append((0, "budget", msg + ": el lector conoce el sistema, edita por excepción y vuelve cerca del largo original"))
         elif ratio > 1.5:
             errors.append((0, "budget", msg + ": supera el techo de 1.5x, recorta"))
         elif ratio > 1.1:
             warnings.append((0, "budget", msg + ": agrega solo lo que este lector no tiene"))
+    allowed = set(filter(None, args.allow.split(",")))
+    warnings += [e for e in errors if e[1] in allowed]
+    errors = [e for e in errors if e[1] not in allowed]
     for n, rule, msg in errors:
         print(f"ERROR line {n} [{rule}] {msg}")
     for n, rule, msg in warnings:

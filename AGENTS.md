@@ -14,7 +14,7 @@ When the operator corrects a `ground-up` output, add the rule here with what enf
 | Spanish with tú, no voseo | `check_draft.py` `[voseo]` error; fixtures `fail-fin-avances-0145`, `fail-crm-precios-374b` |
 | No em or en dashes in prose | `check_draft.py` `[dash]` error; fixture `fail-fin-avances-0145` |
 | Plain verbs over AI vocabulary | `check_draft.py` `[slop]` error |
-| One question per numbered decision | `check_draft.py --decide` `[questions]` error; fixture `fail-lena-2026-11-03` |
+| One question per numbered item | `check_draft.py` `[questions]` error on every run (the `--decide` flag that used to turn it on appeared in 0 of 92 real runs); fixture `fail-lena-2026-11-03` |
 | Backstage stays out of the reader's text | `check_draft.py` `[backstage]` error; fixture `fail-cargocheck-example-before`; judgment in `SKILL.md` "Backstage" |
 | Gloss names outside the reader's common ground | `check_draft.py` `[name]` warning lists first uses; judgment in `SKILL.md` |
 | Same phrase opening three or more lines is template, not prose | `check_draft.py` `[template]` warning; fixture `fail-lena-rewrite-out11` |

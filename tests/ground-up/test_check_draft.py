@@ -18,7 +18,7 @@ def run(name, *flags):
 class CheckDraft(unittest.TestCase):
     def test_real_mistakes_fail(self):
         for name, rules in EXPECT.items():
-            out = run(name, "--decide")
+            out = run(name)
             self.assertEqual(out.returncode, 1, name)
             for rule in rules:
                 self.assertIn(f"ERROR line", out.stdout)
