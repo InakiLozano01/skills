@@ -62,6 +62,20 @@ class CheckDraft(unittest.TestCase):
         out = run("fail-lena-rewrite-luna-out15.txt", "--original", orig)
         self.assertNotRegex(out.stdout, r"ERROR line 0 \[budget\]")
 
+    def test_long_message_fails_and_its_accepted_cut_passes(self):
+        """A 1090-word Slack message got "¿lo puedes hacer más corto?"; the 499-word cut was accepted."""
+        out = run("fail-security-status-1105.masked.txt")
+        self.assertRegex(out.stdout, r"ERROR line 0 \[size\] mensaje de 1090 palabras")
+        out = run("pass-security-status-short-1105.masked.txt")
+        self.assertNotIn("[size]", out.stdout)
+
+    def test_rewrite_and_document_have_no_message_ceiling(self):
+        orig = str(HERE / "fixtures" / "orig-lena-2026-11-03.txt")
+        self.assertNotIn("[size]", run("fail-lena-rewrite-out11.txt", "--original", orig).stdout)
+        doc = "# Informe\n\n" + "palabra " * 900
+        out = subprocess.run([sys.executable, str(SCRIPT)], input=doc, capture_output=True, text=True)
+        self.assertNotIn("[size]", out.stdout)
+
     def test_approved_text_passes(self):
         out = run("pass-fin-aprobado.txt")
         self.assertEqual(out.returncode, 0, out.stdout)

@@ -6,7 +6,10 @@ Usage: python3 check_draft.py [--original ORIGINAL [--owner]] [--allow RULE,...]
 Reads stdin when FILE is omitted.
 --original: measure the rewrite's word budget against ORIGINAL (1.5x ceiling).
 --owner: the reader owns the system, so the budget ceiling is 1.2x.
---allow: demote the named rules to warnings; use it only when the user asked for that wording.
+--allow: demote the named rules to warnings; use it only when the user asked for that wording or that length.
+
+A draft with no Markdown heading is a message to paste: it warns above 500 words and fails above 800.
+A long document carries `#` headings and has no ceiling.
 
 Errors (exit 1) are mechanical and always wrong in a ground-up text.
 Warnings (exit 0) list spots to reread against the reader's common ground.
@@ -175,6 +178,26 @@ def words(text):
     return len(re.findall(r"\S+", text))
 
 
+def reader_text(text):
+    """The reader's message: the fenced blocks when the draft has any, else the whole draft."""
+    keep = recipient_lines(text)
+    return "\n".join(raw for n, raw in enumerate(text.splitlines(), 1) if n in keep)
+
+
+def check_size(text, rewrite):
+    """A message to paste has a word budget. A rewrite is measured against its original instead."""
+    body = reader_text(text)
+    count = words(body)
+    if rewrite or re.search(r"(?m)^#{1,6} ", body):
+        return [], []
+    fix = "deja el pedido y lo que este lector tiene que hacer, y lleva el detalle de consulta a un enlace o quítalo"
+    if count > 800:
+        return [(0, "size", f"mensaje de {count} palabras, el techo es 800: {fix}")], []
+    if count > 500:
+        return [], [(0, "size", f"mensaje de {count} palabras: sobre 500, {fix}")]
+    return [], []
+
+
 def main(argv):
     parser = argparse.ArgumentParser(usage=__doc__.split("Usage: ")[1].split("\n")[0])
     parser.add_argument("file", nargs="?")
@@ -185,6 +208,9 @@ def main(argv):
     args = parser.parse_args(argv)
     text = open(args.file, encoding="utf-8").read() if args.file else sys.stdin.read()
     errors, warnings = check(text)
+    size_errors, size_warnings = check_size(text, rewrite=bool(args.original))
+    errors += size_errors
+    warnings += size_warnings
     if args.original:
         base = words(open(args.original, encoding="utf-8").read())
         ratio = words(text) / base

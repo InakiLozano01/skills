@@ -6,7 +6,7 @@ Run `python3 tests/ground-up/test_check_draft.py` before committing a change to 
 
 ## Rule table
 
-When the operator corrects a `ground-up` output, add the rule here with what enforces it. A rule enforced only by prose that gets corrected again is a repeat: in the same change, move a mechanical rule (a token, a form, a number) up to the script, and turn a semantic rule (redundancy, contradiction, an invented gloss) into a cold-reader question plus a `fail-*` fixture. Each `fail-*` fixture is a real past output. `--allow RULE` demotes a rule to a warning when the user asked for that wording; say so in the note to the user.
+When the operator corrects a `ground-up` output, add the rule here with what enforces it. A rule enforced only by prose that gets corrected again is a repeat: in the same change, move a mechanical rule (a token, a form, a number) up to the script, and turn a semantic rule (redundancy, contradiction, an invented gloss) into a cold-reader question plus a `fail-*` fixture. Each `fail-*` fixture is a real past output; a `.masked` fixture keeps the output's shape and size with every letter and digit replaced, for text that cannot be published. `--allow RULE` demotes a rule to a warning when the user asked for that wording; say so in the note to the user.
 
 | Rule | Enforced by |
 |---|---|
@@ -36,6 +36,7 @@ When the operator corrects a `ground-up` output, add the rule here with what enf
 | The BLUF is the faithful summary of the body (pyramid; reverse outline) | Cold reader question 2; `SKILL.md` and `DECISION-REQUEST.md` Check; fixture `tests/out15/case6-deepseek.md` |
 | Names the reader owns stay bare; glosses only from a source (quantity maxim) | Cold reader question 3; `SKILL.md` Appositive gloss; fixture `fail-lena-rewrite-luna-out15` |
 | Options stated by what makes them distinguishable | `check_draft.py` `[tautology]` error; `DECISION-REQUEST.md` Shape |
+| A message to paste carries the ask and what the reader acts on; reference detail goes behind a link | `check_draft.py` `[size]` error above 800 words, warning above 500, for a draft with no `#` heading and no `--original`; fixtures `fail-security-status-1105.masked` (1090 words, the user asked for a shorter one) and `pass-security-status-short-1105.masked` (the 499-word cut) |
 | Announced counts equal the items that follow | `SKILL.md` Check (judgment) |
 | BLUF first: the answer before the process | `SKILL.md` Check and `DECISION-REQUEST.md` / `PROGRESS.md` Check (judgment) |
 | Every decision carries a recommendation, a date, and a DRI | `DECISION-REQUEST.md` Check (judgment) |

@@ -34,7 +34,7 @@ The ask picks the shape. To **decide**, read [DECISION-REQUEST.md](DECISION-REQU
 4. **Check.** For a text meant for anyone but the user, run the **cold reader** in [COLD-READER.md](COLD-READER.md). Run `python3 scripts/check_draft.py <draft>` from this skill's folder (`--original <file>` for a rewrite, plus `--owner` when the reader owns the system) and fix every `ERROR`. Done when the script exits 0, the cold reader's teach-back matches your intent, the check list of the file you loaded holds, and:
    - the BLUF states the body, count for count, and every count equals the items that follow;
    - names the reader owns stay bare, and every gloss comes from a source;
-   - the text is the size the question calls for;
+   - the text is the size the question calls for: a message to paste carries the ask and what this reader must act on, and reference detail moves behind a link (the script fails a message above 800 words);
    - the copyable block for another reader comes first, with notes for the user after it (open items, the reader you assumed, glossary terms to add).
 
 ## Voice and language
