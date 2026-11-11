@@ -24,7 +24,7 @@ Write in the words the reader uses for their own work. When the reader is unclea
 - **No background** (another team): start from the most basic domain premise and gloss every project term.
 - **User** (the person in the chat): usually engineering; when the text will reach someone else, add what changes for that reader.
 
-The ask picks the shape. To **decide**, read [DECISION-REQUEST.md](DECISION-REQUEST.md). To **track** where work stands or how much is left (`¿cuánto falta?`), read [PROGRESS.md](PROGRESS.md). To **understand** how or why, write narrative prose, and read [LONG-TEXT.md](LONG-TEXT.md) for a long document. To improve an existing text, read [REWRITE.md](REWRITE.md). [EXAMPLE.md](EXAMPLE.md) shows each shape and the short contrasts of common failures. The question sets the size: a narrow question gets a narrow answer.
+The ask picks the shape. To **decide**, read [DECISION-REQUEST.md](DECISION-REQUEST.md). To **act** (do something or send you something), read [ACTION-REQUEST.md](ACTION-REQUEST.md). To **track** where work stands or how much is left (`¿cuánto falta?`), read [PROGRESS.md](PROGRESS.md). To **understand** how or why, write narrative prose, and read [LONG-TEXT.md](LONG-TEXT.md) for a long document. To improve an existing text, read [REWRITE.md](REWRITE.md). [EXAMPLE.md](EXAMPLE.md) shows each shape and the short contrasts of common failures. The question sets the size: a narrow question gets a narrow answer.
 
 ## Steps
 
@@ -34,7 +34,7 @@ The ask picks the shape. To **decide**, read [DECISION-REQUEST.md](DECISION-REQU
 4. **Check.** For a text meant for anyone but the user, run the **cold reader** in [COLD-READER.md](COLD-READER.md) and save its answer to a file; under 200 words, run it when a misread would cost the reader a decision. Run `python3 scripts/check_draft.py --cold <answer> <draft>` from this skill's folder (`--for-user` in place of `--cold` when the text is for the user, `--original <file>` for a rewrite, plus `--owner` when the reader owns the system) and fix every `ERROR`. Done when the script exits 0, the cold reader's teach-back matches your intent, the check list of the file you loaded holds, and:
    - the BLUF states the body, count for count, and every count equals the items that follow;
    - names the reader owns stay bare, and every gloss comes from a source;
-   - the text is the size the question calls for: a message to paste carries the ask and what this reader must act on, and reference detail moves behind a link (the script fails a message above 800 words);
+   - the text is the size the question calls for: a message to paste carries the ask and what this reader must act on, and reference detail moves behind a link or into the notes for the user;
    - the copyable block for another reader comes first, with notes for the user after it (open items, the reader you assumed, glossary terms to add).
 
 ## Voice and language

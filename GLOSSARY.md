@@ -2,7 +2,7 @@
 
 Vocabulary for a skill that writes text an outsider can follow from the first line: explanations for the user, progress reports and decision requests for third parties, and rewrites of existing text.
 
-`SKILL.md` uses ten leading words: **curse of knowledge**, **common ground**, **ground up**, **appositive gloss**, **BLUF**, **certainty**, **show, don't tell**, **backstage**, **classic style**, and **cold reader**. Every other term below belongs to the disclosed file that uses it (for example **completed staff work** to `DECISION-REQUEST.md`, **traceability matrix** and **cone of uncertainty** to `PROGRESS.md`, **edit by exception** to `REWRITE.md`), or explains where a rule came from.
+`SKILL.md` uses ten leading words: **curse of knowledge**, **common ground**, **ground up**, **appositive gloss**, **BLUF**, **certainty**, **show, don't tell**, **backstage**, **classic style**, and **cold reader**. Every other term below belongs to the disclosed file that uses it (for example **completed staff work** to `DECISION-REQUEST.md`, **SBAR** to `ACTION-REQUEST.md`, **traceability matrix** and **cone of uncertainty** to `PROGRESS.md`, **edit by exception** to `REWRITE.md`), or explains where a rule came from.
 
 ## Reader
 
@@ -23,7 +23,7 @@ The **bounded context** the reader works in, which sets the **ubiquitous languag
 _Avoid_: Audience, persona, level
 
 **Ask**:
-What the text needs from the reader. One of three: **decide** (choose between options), **track** (follow where the work stands or how much is left), or **understand** (learn how something works or why it is built that way).
+What the text needs from the reader. One of four: **decide** (choose between options), **act** (do something or send the writer something), **track** (follow where the work stands or how much is left), or **understand** (learn how something works or why it is built that way).
 _Avoid_: Goal, purpose, intent
 
 ## Writing moves
@@ -115,6 +115,14 @@ _Avoid_: Consultation, escalation
 **Door**:
 How reversible a decision is. A **one-way door** is hard to reverse and requires stronger evidence and a named owner. A **two-way door** is cheap to reverse and is the default; the text mentions it only when reversibility is the reason to decide fast.
 _Avoid_: Impact, severity
+
+**Action request**:
+A message that asks a specific person to do something or to send the writer something, shaped as **SBAR**: the requests and their date first, only the background this reader lacks, the writer's assessment stated once, and the numbered requests.
+_Avoid_: Status update with asks at the end
+
+**SBAR (Situation, Background, Assessment, Recommendation)**:
+The handoff order that lets the listener act after the first sentence: what is needed, what the listener lacks, what the speaker thinks is going on, and what the speaker asks for (developed for US Navy nuclear submarines and adapted to clinical handoffs at Kaiser Permanente; Leonard, Graham, and Bonacum, 2004). The four labels stay backstage.
+_Avoid_: Escalation template, the four labels as headings
 
 **Progress report**:
 A structured text for a reader whose ask is `track`. It comes in two sizes, both opening with a BLUF and using `•` bullets inside the copyable message: a **full progress report** (five sections: executive summary in plain words, context with global task and slice, what advanced by capability, how it converges and what comes next, and asks/doubts/dependencies, with a `:thread:` two-message variant for Slack) and a **compact status reply** for questions like `"how much is left?"` (a 1–2 line BLUF with exact item counts from the traceability matrix, followed by state-bucket bullets for `main`, in review/integration, and pending work or decisions, closing with a date range, its assumption, what closes today, and the event that narrows the range).

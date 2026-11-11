@@ -39,5 +39,6 @@ When the operator corrects a `ground-up` output, add the rule here with what enf
 | A message to paste carries the ask and what the reader acts on; reference detail goes behind a link | `check_draft.py` `[size]` error above 800 words, warning above 500, for a draft with no `#` heading and no `--original`; fixtures `fail-security-status-1105.masked` (1090 words, the user asked for a shorter one) and `pass-security-status-short-1105.masked` (the 499-word cut) |
 | Announced counts equal the items that follow | `SKILL.md` Check (judgment) |
 | BLUF first: the answer before the process | `SKILL.md` Check and `DECISION-REQUEST.md` / `PROGRESS.md` Check (judgment) |
+| An action request opens with the requests, their count, and their date; reference items stay out of the message (SBAR) | `ACTION-REQUEST.md` Check (judgment) and cold reader question 1; the four SBAR labels are a `check_draft.py` `[backstage]` error; on the 2026-11-05 security message the same material went from 800 to 606 words (Terra) and from 731 to 598 (Claude), one run each |
 | Every decision carries a recommendation, a date, and a DRI | `DECISION-REQUEST.md` Check (judgment) |
 | Approved text stays clean | fixture `pass-fin-aprobado` must exit 0 |

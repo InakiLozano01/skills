@@ -75,7 +75,7 @@ BACKSTAGE = [
     r"\bmece\b", r"\bstaff work\b", r"\btrabajo de estado mayor\b", r"\bcono de incertidumbre\b",
     r"\bcone of uncertainty\b", r"\bso-?what\b", r"\bread-aloud\b",
     r"\bquantity maxim\b", r"\bmáxima de cantidad\b", r"\bedit by exception\b", r"\breverse[- ]outline\b",
-    r"\bteach-?back\b", r"\bpir[áa]mide de minto\b", r"\bminto\b", r"\bcold reader\b", r"\blector en frío\b",
+    r"\bteach-?back\b", r"\bsbar\b", r"\bpir[áa]mide de minto\b", r"\bminto\b", r"\bcold reader\b", r"\blector en frío\b",
 ]
 
 # Internal-looking names: CODE-12, snake_case, dotted.ids, UPPER_SNAKE, `code`.
