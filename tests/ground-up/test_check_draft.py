@@ -1,5 +1,5 @@
 """Each fail fixture is a real past mistake from a ground-up run; each pass fixture is approved text."""
-import pathlib, subprocess, sys, unittest
+import pathlib, subprocess, sys, tempfile, unittest
 
 HERE = pathlib.Path(__file__).parent
 SCRIPT = HERE.parents[1] / "skills" / "ground-up" / "scripts" / "check_draft.py"
@@ -75,6 +75,18 @@ class CheckDraft(unittest.TestCase):
         doc = "# Informe\n\n" + "palabra " * 900
         out = subprocess.run([sys.executable, str(SCRIPT)], input=doc, capture_output=True, text=True)
         self.assertNotIn("[size]", out.stdout)
+
+    def test_text_for_another_reader_needs_the_cold_reader(self):
+        """Four deliveries of 400 to 1090 words for another reader skipped the cold reader."""
+        name = "pass-security-status-short-1105.masked.txt"
+        self.assertRegex(run(name).stdout, r"ERROR line 0 \[cold\] falta la lectura en frío")
+        self.assertEqual(run(name, "--for-user").returncode, 0)
+        with tempfile.TemporaryDirectory() as tmp:
+            answer = pathlib.Path(tmp) / "cold.txt"
+            answer.write_text("x")
+            self.assertRegex(run(name, "--cold", str(answer)).stdout, r"ERROR line 0 \[cold\]")
+            answer.write_text("1. Me pide cuatro datos antes del 7. " * 5)
+            self.assertEqual(run(name, "--cold", str(answer)).returncode, 0)
 
     def test_approved_text_passes(self):
         out = run("pass-fin-aprobado.txt")

@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Check a ground-up draft for the mistakes agents keep repeating.
 
-Usage: python3 check_draft.py [--original ORIGINAL [--owner]] [--allow RULE,...] [FILE]
+Usage: python3 check_draft.py (--cold ANSWER | --for-user) [--original ORIGINAL [--owner]] [--allow RULE,...] [FILE]
 
 Reads stdin when FILE is omitted.
+--cold: the file where you saved the cold reader's answer (COLD-READER.md). A text over 200 words fails without it.
+--for-user: the text is for the person in this chat, so it needs no cold reader.
 --original: measure the rewrite's word budget against ORIGINAL (1.5x ceiling).
 --owner: the reader owns the system, so the budget ceiling is 1.2x.
 --allow: demote the named rules to warnings; use it only when the user asked for that wording or that length.
@@ -17,6 +19,7 @@ Each message names the fix. Add a rule here when a new repeat shows up.
 """
 
 import argparse
+import os
 import re
 import sys
 
@@ -198,9 +201,22 @@ def check_size(text, rewrite):
     return [], []
 
 
+def check_cold(text, cold, for_user):
+    """A text over 200 words for another reader needs the cold reader's saved answer."""
+    if for_user or words(reader_text(text)) <= 200:
+        return []
+    if not cold:
+        return [(0, "cold", "falta la lectura en frío: sigue COLD-READER.md, guarda la respuesta en un archivo y pasa --cold ARCHIVO; si el texto es para el usuario de este chat, pasa --for-user")]
+    if not os.path.isfile(cold) or words(open(cold, encoding="utf-8").read()) < 20:
+        return [(0, "cold", f"'{cold}' no contiene la respuesta de la lectura en frío: guarda ahí las cinco respuestas de COLD-READER.md")]
+    return []
+
+
 def main(argv):
     parser = argparse.ArgumentParser(usage=__doc__.split("Usage: ")[1].split("\n")[0])
     parser.add_argument("file", nargs="?")
+    parser.add_argument("--cold")
+    parser.add_argument("--for-user", action="store_true")
     parser.add_argument("--original")
     parser.add_argument("--owner", action="store_true")
     parser.add_argument("--allow", default="")
@@ -209,7 +225,7 @@ def main(argv):
     text = open(args.file, encoding="utf-8").read() if args.file else sys.stdin.read()
     errors, warnings = check(text)
     size_errors, size_warnings = check_size(text, rewrite=bool(args.original))
-    errors += size_errors
+    errors += size_errors + check_cold(text, args.cold, args.for_user)
     warnings += size_warnings
     if args.original:
         base = words(open(args.original, encoding="utf-8").read())

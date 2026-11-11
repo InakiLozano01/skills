@@ -28,7 +28,7 @@ When the operator corrects a `ground-up` output, add the rule here with what enf
 | Number only the questions; blocks get headings | `check_draft.py` `[numbering]` error; fixture `fail-lena-rewrite-terra-out12` |
 | Rules serve commander's intent, not a checklist to recite (no door questions, no "no responsible identified") | `SKILL.md` (judgment); fixtures `fail-lena-rewrite-terra-out11`, `fail-lena-rewrite-terra-out12` |
 | Each option names a consequence its name does not already say | `check_draft.py` `[tautology]` error; fixtures `fail-lena-rewrite-terra-out12`, `fail-lena-rewrite-terra-out13`; `DECISION-REQUEST.md` Shape |
-| The reader understands the ask without the writer's context | Cold reader subagent in `COLD-READER.md` (structure: a real context boundary); judgment on its restatement |
+| The reader understands the ask without the writer's context | Cold reader subagent in `COLD-READER.md` (structure: a real context boundary); `check_draft.py` `[cold]` error for a text over 200 words with no `--cold <answer>` and no `--for-user`; fixture `pass-security-status-short-1105.masked` fails without the answer; judgment on its restatement |
 | Guess the reader and name the guess; ask only when the reader changes the whole text | `SKILL.md` Know the reader (judgment) |
 | Gloss or drop: names the reader does not need leave the text | `SKILL.md` Gather criterion (judgment); `[name]` warning |
 | Trim words, never items; absolute dates; bullets true when quoted alone | `REWRITE.md` and `PROGRESS.md` Check (judgment) |

@@ -15,8 +15,8 @@ A **cold reader** is a reader with fresh eyes: someone who gets only the text, e
    >
    > `<message>`
 
-   Done when the subagent has answered.
+   Done when the subagent has answered and you have saved its answer to a file.
 2. **Compare.** Set its answer beside your intent: the ask, the date, and the one thing the reader must take away. Compare its body list (answer 2) with every item you gathered, and its answer 5 with what you meant to cover. Check each quote in answer 3 against the reader's common ground before you cut it. Done when every difference is listed.
-3. **Fix.** Close each difference in the draft: make the opening the summary of the body, cut what the reader already knows, ground or drop what they could not follow, add what was missing. Run `check_draft.py` again. Done when the script exits 0 and the teach-back matches your intent. Run the hand-off once more only when a fix changed the ask or the opening.
+3. **Fix.** Close each difference in the draft: make the opening the summary of the body, cut what the reader already knows, ground or drop what they could not follow, add what was missing. Run `check_draft.py --cold <answer file>` again. Done when the script exits 0 and the teach-back matches your intent. Run the hand-off once more only when a fix changed the ask or the opening.
 
-When you cannot start a subagent, answer the five questions yourself as the reader, from the block alone, before comparing, and say in the note to the user that the cold read was done by the writer.
+When you cannot start a subagent, answer the five questions yourself as the reader, from the block alone, before comparing, save the answers to the file you pass as `--cold`, and say in the note to the user that the cold read was done by the writer.

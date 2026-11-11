@@ -6,8 +6,8 @@ Before writing, count the words of the original. **Edit by exception**: keep eac
 
 The **word budget** depends on the reader, unless the user asks for a different length:
 
-- **A reader who owns the system** (their common ground holds the names): the original length. Run `check_draft.py --original <file> --owner`; it fails above 1.2x.
-- **Any other reader**: up to 1.5x, spent on the glosses and domain basics this reader lacks. Run `check_draft.py --original <file>`; it fails above 1.5x.
+- **A reader who owns the system** (their common ground holds the names): the original length. Run `check_draft.py --cold <answer> --original <file> --owner`; it fails above 1.2x.
+- **Any other reader**: up to 1.5x, spent on the glosses and domain basics this reader lacks. Run `check_draft.py --cold <answer> --original <file>`; it fails above 1.5x.
 
 - Preserve the original's headings, structure, tables, and diagrams unless the user asks to restructure them (such as turning a prose status update into the structured bullets of [PROGRESS.md](PROGRESS.md)).
 - Place each appositive gloss inside the existing sentence, and weave missing domain basics into the existing paragraphs.
