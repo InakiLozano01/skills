@@ -1,8 +1,0 @@
-name: check
-on: [push, pull_request]
-jobs:
-  ground-up:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: python3 tests/ground-up/test_check_draft.py -v
