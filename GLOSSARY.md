@@ -2,7 +2,7 @@
 
 Vocabulary for a skill that writes text an outsider can follow from the first line: explanations for the user, progress reports and decision requests for third parties, and rewrites of existing text.
 
-`SKILL.md` uses ten leading words: **curse of knowledge**, **common ground**, **ground up**, **appositive gloss**, **BLUF**, **certainty**, **show, don't tell**, **backstage**, **classic style**, and **cold reader**. Every other term below belongs to the disclosed file that uses it (for example **completed staff work** to `DECISION-REQUEST.md`, **SBAR** to `ACTION-REQUEST.md`, **traceability matrix** and **cone of uncertainty** to `PROGRESS.md`, **edit by exception** to `REWRITE.md`), or explains where a rule came from.
+`SKILL.md` uses six leading words: **common ground**, **ground up**, **certainty**, **BLUF**, **completed staff work**, and **cold reader**. The disclosed files add terms only when their branch needs them, such as **SBAR** for action requests, **traceability matrix** and **cone of uncertainty** for progress reports, and **edit by exception** for rewrites.
 
 ## Reader
 

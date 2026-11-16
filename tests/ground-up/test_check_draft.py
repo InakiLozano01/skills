@@ -99,7 +99,8 @@ class SkillShape(unittest.TestCase):
 
     def test_files_stay_within_their_budget(self):
         core = (self.SKILL / "SKILL.md").read_text()
-        self.assertLessEqual(len(core.splitlines()), 45, "SKILL.md: move a branch to its disclosed file")
+        self.assertLessEqual(len(core.splitlines()), 35, "SKILL.md: move a branch to its disclosed file")
+        self.assertLessEqual(len(core.split()), 650, "SKILL.md: cut reference or move a branch to its disclosed file")
         for path in self.SKILL.glob("*.md"):
             if path.name != "SKILL.md":
                 count = len(path.read_text().split())
@@ -112,6 +113,11 @@ class SkillShape(unittest.TestCase):
             self.assertLessEqual(len(blocks), 1, f"{path.name}: one contrast per file")
             for block in blocks:
                 self.assertLessEqual(len(block.split()), 90, f"{path.name}: the contrast is longer than 90 words")
+
+    def test_core_keeps_its_leading_words(self):
+        core = (self.SKILL / "SKILL.md").read_text().lower()
+        for word in ["common ground", "ground up", "certainty", "bluf", "completed staff work", "cold reader"]:
+            self.assertIn(word, core, f"SKILL.md lost leading word: {word}")
 
     def test_every_link_resolves(self):
         for path in self.SKILL.glob("*.md"):
