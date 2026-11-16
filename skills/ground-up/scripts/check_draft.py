@@ -207,8 +207,14 @@ def check_cold(text, cold, for_user):
         return []
     if not cold:
         return [(0, "cold", "falta la lectura en frío: sigue COLD-READER.md, guarda la respuesta en un archivo y pasa --cold ARCHIVO; si el texto es para el usuario de este chat, pasa --for-user")]
-    if not os.path.isfile(cold) or words(open(cold, encoding="utf-8").read()) < 20:
+    if not os.path.isfile(cold):
         return [(0, "cold", f"'{cold}' no contiene la respuesta de la lectura en frío: guarda ahí las cinco respuestas de COLD-READER.md")]
+    answer = open(cold, encoding="utf-8").read()
+    if words(answer) < 20:
+        return [(0, "cold", f"'{cold}' no contiene la respuesta de la lectura en frío: guarda ahí las cinco respuestas de COLD-READER.md")]
+    numbers = {int(match.group(1)) for match in re.finditer(r"(?m)^\s*([1-5])[.)]\s+", answer)}
+    if numbers != {1, 2, 3, 4, 5}:
+        return [(0, "cold", f"'{cold}' debe contener cinco respuestas numeradas del 1 al 5, como COLD-READER.md")]
     return []
 
 

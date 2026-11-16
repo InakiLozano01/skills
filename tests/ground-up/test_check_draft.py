@@ -85,8 +85,10 @@ class CheckDraft(unittest.TestCase):
             answer = pathlib.Path(tmp) / "cold.txt"
             answer.write_text("x")
             self.assertRegex(run(name, "--cold", str(answer)).stdout, r"ERROR line 0 \[cold\]")
-            answer.write_text("1. Me pide cuatro datos antes del 7. " * 5)
+            answer.write_text("\n".join(f"{i}. Respuesta verificable para el lector." for i in range(1, 6)))
             self.assertEqual(run(name, "--cold", str(answer)).returncode, 0)
+            answer.write_text("1. Respuesta única repetida. " * 8)
+            self.assertRegex(run(name, "--cold", str(answer)).stdout, r"ERROR line 0 \[cold\]")
 
     def test_approved_text_passes(self):
         out = run("pass-fin-aprobado.txt")

@@ -6,7 +6,7 @@ Research for the `ground-up` writing skill. The skill stays short; this file kee
 
 **Use leading words, not a longer checklist.** Matt Pocock calls these *leading words*: short phrases that bring a larger learned method to mind. His writing-for-agents skill says to front-load the word in a pointer, repeat the token rather than a sentence, and delete instructions that do not change behavior. The current design therefore keeps six words in `SKILL.md` and leaves branch-specific vocabulary in the disclosed files. Matt's term is "leading word". *Leitwort* is the literary source term, not his attribution.
 
-**Keep the core small and disclose by branch.** Matt's skill separates steps from reference and pushes branch-specific material behind pointers. Pstack's public README uses one entry mode, `poteto-mode`, which routes to playbooks and principles. The repo's 35-line, 650-word core limit is stricter than pstack's router because `ground-up` has one user-invoked entry point and does not need a general mode.
+**Keep the core small and disclose by branch.** Matt's skill separates steps from reference and pushes branch-specific material behind pointers. Pstack's public README presents `poteto-mode` as its main router to playbooks and principles. The repo's 35-line, 650-word core limit is stricter than pstack's router because `ground-up` has one user-invoked entry point and does not need a general mode.
 
 **Use outside checks for semantic claims.** Pstack's public material emphasizes verification and real artifacts, but its own skills do not provide a comparable test suite. `ground-up` keeps the stronger local design: mechanical checks in `check_draft.py`, real past outputs as fixtures, and a cold reader for claims about clarity. The remaining semantic risk is that a passing linter cannot prove the opening matches the body or that a gloss is sufficient.
 
@@ -63,7 +63,7 @@ These map to mission command's intent and shared understanding, shared mental mo
 - [Vaugrante et al., prompting replication](https://arxiv.org/abs/2409.20303)
 - [Zheng et al., personas](https://aclanthology.org/2024.findings-emnlp.888/)
 - [ADP 6-0, Mission Command](https://adamdrake.com/static/ADP-6-0-Mission-Command.pdf)
-- [Clark and Brennan, Grounding in Communication](https://web.stanford.edu/~clark/1990s/Clark%20%26%20Brennan%201991.pdf)
+- [Clark and Brennan, Grounding in Communication](https://doi.org/10.1037/10096-006)
 - [Mathieu et al., shared mental models](https://doi.org/10.1037/0021-9010.85.2.273)
 - [Lewis, transactive memory](https://doi.org/10.5465/3069448)
 - [Okhuysen and Bechky, coordination](https://doi.org/10.5465/19416520903047533)
@@ -75,4 +75,4 @@ These map to mission command's intent and shared understanding, shared mental mo
 
 ## Local audit
 
-The current repository version has a 25-line, 457-word `SKILL.md`, six disclosed branch files, no examples file, and a mechanical shape limit of 35 lines and 650 words for the core. The suite passes 17 tests. The three saved Terra outputs from the previous round also pass the checker: 737 words for the rewrite, 318 for the compact progress reply, and 594 for the action request, with no errors. They still produce warnings, so the checker is a gate, not a quality verdict. The action request contains grouped data fields under some numbered points; that remains a semantic review concern for the cold reader, not a new regex rule.
+The current repository version has a 25-line, 481-word `SKILL.md`, six disclosed branch files, no examples file, and a mechanical shape limit of 35 lines and 650 words for the core. The suite passes 17 tests. The three saved Terra outputs from the previous round also pass the checker: 737 words for the rewrite, 318 for the compact progress reply, and 594 for the action request, with no errors. They still produce warnings, so the checker is a gate, not a quality verdict. The action request contains grouped data fields under some numbered points; that remains a semantic review concern for the cold reader, not a new regex rule.

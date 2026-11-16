@@ -13,7 +13,7 @@ Use the smallest shape that answers the ask. Think with these leading words:
 - **Completed staff work** settles what the material lets you settle, then gives the reader one clear choice or action.
 - **Cold reader** checks what a person without your context can teach back.
 
-Write the reader's language. Keep project names when the reader needs them, and gloss each unfamiliar name with its kind and role on first use. Use concrete actors and verbs. Keep the working process, skill terms, and internal labels in notes unless they change what the reader decides or does. Give estimates as ranges with their assumptions and the event that narrows them.
+Write the reader's language. Read the conversation, code, `main`, open PRs, documents, and tickets, and wait for every exploration. Keep project names when the reader needs them, and gloss each unfamiliar name only with what a source says. Drop names the reader does not need. Use concrete actors and verbs. Keep the working process, skill terms, and internal labels in notes unless they change what the reader decides or does. Give estimates as ranges with their assumptions and the event that narrows them.
 
 The ask chooses the branch. Read [DECISION-REQUEST.md](DECISION-REQUEST.md) for a choice, [ACTION-REQUEST.md](ACTION-REQUEST.md) for something to do or send, [PROGRESS.md](PROGRESS.md) for status or remaining work, [LONG-TEXT.md](LONG-TEXT.md) for a long explanation, and [REWRITE.md](REWRITE.md) for an existing text.
 

@@ -37,7 +37,7 @@ When the operator corrects a `ground-up` output, add the rule here with what enf
 | Gloss or drop: names the reader does not need leave the text | `SKILL.md` Gather criterion (judgment); `[name]` warning |
 | Trim words, never items; absolute dates; bullets true when quoted alone | `REWRITE.md` and `PROGRESS.md` Check (judgment) |
 | Rewrite for a reader who owns the system stays near the original length (edit by exception) | `check_draft.py --original --owner` `[budget]` error above 1.2x; fixture `fail-lena-rewrite-luna-out15` |
-| The BLUF is the faithful summary of the body (pyramid; reverse outline) | Cold reader question 2; `SKILL.md` and `DECISION-REQUEST.md` Check; fixture `tests/out15/case6-deepseek.md` |
+| The BLUF is the faithful summary of the body (pyramid; reverse outline) | Cold reader question 2; `SKILL.md` and `DECISION-REQUEST.md` Check |
 | Names the reader owns stay bare; glosses only from a source (quantity maxim) | Cold reader question 3; `SKILL.md` Appositive gloss; fixture `fail-lena-rewrite-luna-out15` |
 | Options stated by what makes them distinguishable | `check_draft.py` `[tautology]` error; `DECISION-REQUEST.md` Shape |
 | A message to paste carries the ask and what the reader acts on; reference detail goes behind a link | `check_draft.py` `[size]` error above 800 words, warning above 500, for a draft with no `#` heading and no `--original`; fixtures `fail-security-status-1105.masked` (1090 words, the user asked for a shorter one) and `pass-security-status-short-1105.masked` (the 499-word cut) |
