@@ -2,7 +2,7 @@
 
 Vocabulary for a skill that writes text an outsider can follow from the first line: explanations for the user, progress reports and decision requests for third parties, and rewrites of existing text.
 
-`SKILL.md` uses six leading words: **common ground**, **ground up**, **certainty**, **BLUF**, **completed staff work**, and **cold reader**. The disclosed files add terms only when their branch needs them, such as **SBAR** for action requests, **traceability matrix** and **cone of uncertainty** for progress reports, and **edit by exception** for rewrites, and **ask audit** for any text that asks the reader something.
+`SKILL.md` uses six leading words: **common ground**, **ground up**, **certainty**, **BLUF**, **completed staff work**, and **cold reader**. The disclosed files add terms only when their branch needs them, such as **SBAR** for action requests, **traceability matrix** and **cone of uncertainty** for progress reports, **edit by exception** for rewrites, and **ask audit** for any text that asks the reader something.
 
 ## Reader
 
