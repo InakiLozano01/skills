@@ -1,0 +1,12 @@
+No, perdón, me expliqué mal. No hay dudas sobre 18 políticas: los 18 son los 18 casos de prueba de la primera ronda (las aperturas de la planilla de la analista).
+
+Para cada uno de esos 18 casos armamos qué bloqueantes debería dar el agente. La duda es una sola: ¿contra qué criterio los juzgamos?
+Opción A: la política v4 tal como estaba el 5/11.
+Opción B: la v4 más las 19 reglas que cerraste ayer con Tomás.
+Cambia el resultado de algunos casos. Por ejemplo, en el caso 15 el domicilio legal distinto hoy va a revisión de la analista, pero con la regla 19 pasa a pedido bloqueante del acta.
+
+Con que me digas A o B alcanza. Después, en la página, marcás ok o corrección en cada caso.
+
+Y una más, del pedido personal: revisamos las 11 aperturas y el idTitular de las observaciones no coincide con ningún dato que traigan las personas del alta (ni numero ni codigoExterno). Así que no lo podemos resolver de nuestro lado: hace falta que Sistemas mande el idTitular en cada persona del evento. ¿Se lo podés pasar? Este es el pedido:
+
+En el mensaje de derivación, ¿pueden incluir en cada elemento de personas el idTitular de esa persona, con el mismo identificador que llega en observaciones cuando el pedido se refiere a ella? Si ya existe un campo equivalente, ¿cuál es?

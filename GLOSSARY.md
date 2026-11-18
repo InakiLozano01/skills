@@ -2,7 +2,7 @@
 
 Vocabulary for a skill that writes text an outsider can follow from the first line: explanations for the user, progress reports and decision requests for third parties, and rewrites of existing text.
 
-`SKILL.md` uses six leading words: **common ground**, **ground up**, **certainty**, **BLUF**, **completed staff work**, and **cold reader**. The disclosed files add terms only when their branch needs them, such as **SBAR** for action requests, **traceability matrix** and **cone of uncertainty** for progress reports, and **edit by exception** for rewrites.
+`SKILL.md` uses six leading words: **common ground**, **ground up**, **certainty**, **BLUF**, **completed staff work**, and **cold reader**. The disclosed files add terms only when their branch needs them, such as **SBAR** for action requests, **traceability matrix** and **cone of uncertainty** for progress reports, and **edit by exception** for rewrites, and **ask audit** for any text that asks the reader something.
 
 ## Reader
 
@@ -83,6 +83,10 @@ _Avoid_: Relevance check
 **Completed staff work**:
 A decision request in which the writer has settled every question the material allows, so the reader approves, picks, or corrects a recommendation (memo attributed to Archer J. Lerch, 1942).
 _Avoid_: Consultation, asking the reader to think for you
+
+**Ask audit**:
+A subagent that gets the sources, not the draft, and sorts each ask as settled by a later decision, derivable from the sources, a recheck of what the reader already decided, held by another person, ours to decide, or needed. Only needed asks reach the reader. It is the check behind completed staff work, as the cold reader is the check behind comprehension.
+_Avoid_: Clarifying questions, sanity check
 
 **MECE (mutually exclusive, collectively exhaustive)**:
 The rule for lists and groups: each item and each ask appears once, in one group, and the groups cover everything gathered, so announced counts match (Minto, *The Pyramid Principle*).

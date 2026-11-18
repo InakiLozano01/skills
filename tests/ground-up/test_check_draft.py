@@ -86,9 +86,20 @@ class CheckDraft(unittest.TestCase):
             answer.write_text("x")
             self.assertRegex(run(name, "--cold", str(answer)).stdout, r"ERROR line 0 \[cold\]")
             answer.write_text("\n".join(f"{i}. Respuesta verificable para el lector." for i in range(1, 6)))
-            self.assertEqual(run(name, "--cold", str(answer)).returncode, 0)
+            audit = pathlib.Path(tmp) / "asks.txt"
+            audit.write_text("\n".join(f"{i}. NEEDED: solo el lector conoce su entorno." for i in range(1, 4)))
+            self.assertEqual(run(name, "--cold", str(answer), "--asks", str(audit)).returncode, 0)
             answer.write_text("1. Respuesta única repetida. " * 8)
             self.assertRegex(run(name, "--cold", str(answer)).stdout, r"ERROR line 0 \[cold\]")
+
+    def test_unneeded_asks_fail_the_audit(self):
+        """18/11: three well-explained messages asked a domain lead things a later decision, the sources, or another person already answered."""
+        for name, dropped in [("criterio", "OURS, RECHECK, SETTLED"), ("seis-controles", "DERIVABLE")]:
+            draft, audit = f"fail-asks-{name}-1811.txt", str(HERE / "fixtures" / f"audit-asks-{name}-1811.txt")
+            self.assertNotIn("[asks]", run(draft, "--for-user").stdout)
+            self.assertRegex(run(draft, "--allow", "cold").stdout, r"ERROR line 0 \[asks\] el texto hace \d+ preguntas al lector y falta")
+            out = run(draft, "--allow", "cold", "--asks", audit)
+            self.assertRegex(out.stdout, rf"ERROR line 0 \[asks\] el texto hace \d+ preguntas y la auditoría deja 0 NEEDED \({dropped} no van\)")
 
     def test_approved_text_passes(self):
         out = run("pass-fin-aprobado.txt")

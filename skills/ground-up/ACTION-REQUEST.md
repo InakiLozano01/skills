@@ -4,7 +4,7 @@ An **action request** asks one person to do something or to send you something (
 
 ## Gather
 
-List every action and every answer the material shows as pending on that person, and what each one unblocks. Mark everything else you gathered as reference: work you finished, checks that passed, context that asks nothing of this reader. Done when every item is on one of the two lists.
+List every action and every answer the material shows as pending on that person, and what each one unblocks. Run [ASK-AUDIT.md](ASK-AUDIT.md) on that list and keep only what it leaves. Mark everything else you gathered as reference: work you finished, checks that passed, context that asks nothing of this reader. Done when every item is on one of the two lists.
 
 ## Shape
 

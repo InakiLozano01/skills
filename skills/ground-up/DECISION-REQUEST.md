@@ -4,7 +4,7 @@ A **decision request** asks one person to decide (`decide`). Deliver **completed
 
 ## Gather
 
-List every decision, approval, and confirmation the material shows as pending on that person, including technical approvals they own. Choose what belongs in this message and put blocking decisions first. Done when the list covers the whole material.
+List every decision, approval, and confirmation the material shows as pending on that person, including technical approvals they own. Run [ASK-AUDIT.md](ASK-AUDIT.md) on that list and keep only what it leaves. Choose what belongs in this message and put blocking decisions first. Done when the list covers the whole material.
 
 ## Shape
 

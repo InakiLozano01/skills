@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """Check a ground-up draft for the mistakes agents keep repeating.
 
-Usage: python3 check_draft.py (--cold ANSWER | --for-user) [--original ORIGINAL [--owner]] [--allow RULE,...] [FILE]
+Usage: python3 check_draft.py (--cold ANSWER | --for-user) [--asks AUDIT] [--original ORIGINAL [--owner]] [--allow RULE,...] [FILE]
 
 Reads stdin when FILE is omitted.
 --cold: the file where you saved the cold reader's answer (COLD-READER.md). A text over 200 words fails without it.
 --for-user: the text is for the person in this chat, so it needs no cold reader.
+--asks: the file where you saved the ask audit's answer (ASK-AUDIT.md). A text that asks its reader a question fails without it.
 --original: measure the rewrite's word budget against ORIGINAL (1.5x ceiling).
 --owner: the reader owns the system, so the budget ceiling is 1.2x.
 --allow: demote the named rules to warnings; use it only when the user asked for that wording or that length.
@@ -218,11 +219,35 @@ def check_cold(text, cold, for_user):
     return []
 
 
+VERDICT = re.compile(r"(?m)^\s*\d+[.)]\s*\**(SETTLED|DERIVABLE|RECHECK|OWNER|OURS|NEEDED)\b")
+
+
+def check_asks(text, asks, for_user):
+    """Each question left for another reader needs its own NEEDED line in the ask audit."""
+    if for_user and "```" not in text:
+        return []
+    body = "\n".join(strip_code(line) for line in reader_text(text).splitlines())
+    questions = body.count("?")
+    if not questions:
+        return []
+    if not asks or not os.path.isfile(asks):
+        return [(0, "asks", f"el texto hace {questions} preguntas al lector y falta la auditoría de pedidos: sigue ASK-AUDIT.md, guarda la respuesta en un archivo y pasa --asks ARCHIVO")]
+    verdicts = [m.group(1) for m in VERDICT.finditer(open(asks, encoding="utf-8").read())]
+    if not verdicts:
+        return [(0, "asks", f"'{asks}' no contiene veredictos: una línea 'N. VEREDICTO: evidencia' por pedido, como ASK-AUDIT.md")]
+    needed = verdicts.count("NEEDED")
+    if questions > needed:
+        dropped = ", ".join(sorted({v for v in verdicts if v != "NEEDED"}))
+        return [(0, "asks", f"el texto hace {questions} preguntas y la auditoría deja {needed} NEEDED ({dropped} no van): resuélvelas o quítalas del texto, y audita toda pregunta nueva")]
+    return []
+
+
 def main(argv):
     parser = argparse.ArgumentParser(usage=__doc__.split("Usage: ")[1].split("\n")[0])
     parser.add_argument("file", nargs="?")
     parser.add_argument("--cold")
     parser.add_argument("--for-user", action="store_true")
+    parser.add_argument("--asks")
     parser.add_argument("--original")
     parser.add_argument("--owner", action="store_true")
     parser.add_argument("--allow", default="")
@@ -231,7 +256,7 @@ def main(argv):
     text = open(args.file, encoding="utf-8").read() if args.file else sys.stdin.read()
     errors, warnings = check(text)
     size_errors, size_warnings = check_size(text, rewrite=bool(args.original))
-    errors += size_errors + check_cold(text, args.cold, args.for_user)
+    errors += size_errors + check_cold(text, args.cold, args.for_user) + check_asks(text, args.asks, args.for_user)
     warnings += size_warnings
     if args.original:
         base = words(open(args.original, encoding="utf-8").read())
